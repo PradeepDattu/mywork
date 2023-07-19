@@ -25,18 +25,13 @@ ServicesSub.get("/:id", async (req, res) => {
 ServicesSub.post("/", async (req, res) => {
   const payload = req.body;
   try {
-    let datall = [];
-    for (let dataobj = 0; dataobj < payload.length; dataobj++) {
-      const dataMain = await ServicesMainModel.findOne({
-        smname: payload[dataobj].mainname,
-      });
-      const id = dataMain._id;
-      const data = new ServicesSubModel({ ...payload[dataobj], mainId: id });
-      datall.push(data);
-      await data.save();
-    }
-
-    res.send(datall);
+    const dataMain = await ServicesMainModel.findOne({
+      smname: payload.mainname,
+    });
+    const id = dataMain._id;
+    const data = new ServicesSubModel({ ...payload, mainId: id });
+    await data.save();
+    res.send(data);
   } catch {
     res.send("Post ERRoR");
   }
