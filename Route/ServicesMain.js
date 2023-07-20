@@ -6,24 +6,23 @@ const ServicesMain = express.Router();
 ServicesMain.get("/", async (req, res) => {
   try {
     const data = await ServicesMainModel.find();
+    data.sort((a, b) => a.starting - b.starting);
     res.send(data);
   } catch {
     res.send("Error");
   }
 });
 
-
-ServicesMain.post("/",async(req,res)=>{
-    const payload=req.body
-    try{
-       const data =new ServicesMainModel(payload)
-       await data.save()
-       res.send(data)
-    }
-    catch{
-        res.send("Post ERROR")
-    }
-})
+ServicesMain.post("/", async (req, res) => {
+  const payload = req.body;
+  try {
+    const data = new ServicesMainModel(payload);
+    await data.save();
+    res.send(data);
+  } catch {
+    res.send("Post ERROR");
+  }
+});
 
 ServicesMain.delete("/:id", async (req, res) => {
   const id = req.params.id;
@@ -38,9 +37,9 @@ ServicesMain.delete("/:id", async (req, res) => {
 
 ServicesMain.patch("/:id", async (req, res) => {
   const id = req.params.id;
-  const payload=req.body
+  const payload = req.body;
   try {
-    await ServicesMainModel.findByIdAndUpdate({ "_id": id },payload);
+    await ServicesMainModel.findByIdAndUpdate({ _id: id }, payload);
     res.send("Update Success");
   } catch {
     res.send("error Update");
