@@ -28,7 +28,7 @@ Event.get("/", async (req, res) => {
         .exec();
     } else {
       data = await EventModel.find().sort({ eventDate: "asc" }).exec();
-    } 
+    }
 
     const sortedData = data.sort((a, b) => {
       const [dayA, monthA, yearA] = a.eventDate.split("/");
@@ -99,10 +99,10 @@ Event.post("/", async (req, res) => {
   const day = currentDate.getDate();
   const month = currentDate.getMonth() + 1;
   const year = currentDate.getFullYear();
-  
+
   // Add leading zero to month if necessary
   const formattedMonth = month < 10 ? `0${month}` : month;
-  const foramttedday=day<10?`0${day}`:day
+  const foramttedday = day < 10 ? `0${day}` : day;
   const formattedDate = `${foramttedday}/${formattedMonth}/${year}`;
   let check = await UsersModel.find({ phone: payload.phone });
   try {
@@ -124,14 +124,20 @@ Event.post("/", async (req, res) => {
     if (!userid[0].address) {
       await UsersModel.findByIdAndUpdate(
         { _id: id },
-        { address: `${payload.address}, ${payload.pincode}, ${payload.district}` }
+        {
+          address: `${payload.address}, ${payload.pincode}, ${payload.district}`,
+        }
       );
     }
-    const data = new EventModel({ ...payload, userId: id,bookingDate:formattedDate });
+    const data = new EventModel({
+      ...payload,
+      userId: id,
+      bookingDate: formattedDate,
+    });
     await data.save();
     res.send(data);
   } catch {
-    res.send("err"); 
+    res.send("err");
   }
 });
 Event.delete("/:id", async (req, res) => {
@@ -140,34 +146,41 @@ Event.delete("/:id", async (req, res) => {
     const data = await EventModel.find({ _id: id });
     const payment = data[0].paymentStatus;
     const amount = data[0].ammount;
-   
+    const expenses = data[0].expense;
+
     const user = await UsersModel.find({ _id: data[0].userId });
     let { paidAmmount } = user[0];
     let { remainAmmount } = user[0];
-    if(payment){
+    let { expense } = user[0];
+    if (payment) {
       paidAmmount -= amount;
       await UsersModel.findByIdAndUpdate(
         { _id: data[0].userId },
-  
-        { paidAmmount}
+
+        { paidAmmount }
       );
-    }
-    else{
+    } else {
       remainAmmount -= amount;
       await UsersModel.findByIdAndUpdate(
         { _id: data[0].userId },
-  
-        {remainAmmount }
+
+        { remainAmmount }
       );
     }
+    expense -= expenses;
+    await UsersModel.findByIdAndUpdate(
+      { _id: data[0].userId },
+
+      { expense }
+    );
     await EventModel.findByIdAndDelete({ _id: id });
     res.send("Delete Success");
-  } catch(err) {
-    console.log(err)
+  } catch (err) {
+    console.log(err);
     res.send("Delete Error");
   }
 });
-  
+
 Event.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const payload = req.body;
@@ -176,21 +189,22 @@ Event.patch("/:id", async (req, res) => {
     const data = await EventModel.find({ _id: id });
     const payment = data[0].paymentStatus;
     const amount = data[0].ammount;
+    const expenses = data[0].expense;
 
     await EventModel.findByIdAndUpdate({ _id: id }, { ...payload });
     const newdata = await EventModel.find({ _id: id });
     const paymentnew = newdata[0].paymentStatus;
     const amountnew = newdata[0].ammount;
+    const expensenew = newdata[0].expense;
 
     const user = await UsersModel.find({ _id: data[0].userId });
     let { paidAmmount } = user[0];
     let { remainAmmount } = user[0];
+    let { expense } = user[0];
 
     if (payment == paymentnew) {
-      
       console.log(amount, amountnew);
       if (amount != amountnew) {
-        
         if (paymentnew) {
           paidAmmount += amountnew - amount;
         } else {
@@ -208,13 +222,14 @@ Event.patch("/:id", async (req, res) => {
         remainAmmount -= amount;
       }
     }
+    expense = expense + expensenew - expenses;
     const usersdata = await UsersModel.find({ _id: data[0].userId });
     console.log(paidAmmount, remainAmmount, usersdata);
 
     await UsersModel.findByIdAndUpdate(
       { _id: data[0].userId },
 
-      { paidAmmount, remainAmmount }
+      { paidAmmount, remainAmmount, expense }
     );
     res.send("Updated successfully");
   } catch (err) {

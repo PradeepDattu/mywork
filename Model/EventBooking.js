@@ -18,6 +18,7 @@ const eventSchema = mongoose.Schema({
   image:{type:String,default:null},
   paymentStatus:{type:Boolean,default:false},
   ammount:{type:Number,default:0},
+  expense:{type:Number,default:0},
   address: { type: String, require: true },
   district: { type: String },
   authorMessage: { type: String,default: null }
