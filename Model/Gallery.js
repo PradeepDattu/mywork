@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const gallerySchema = mongoose.Schema({
-    imageSrc: { type: String, required: true },
-    date: { type: String, required: true },
-    title: { type: String, required: true },
-    text: { type: String, required: true }
+    imageSrc: { type: String },
+    date: { type: String },
+    title: { type: String},
+    text: { type: String}
 });
 
 const GalleryModel = mongoose.model("Gallery", gallerySchema);
