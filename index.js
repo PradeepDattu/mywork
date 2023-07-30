@@ -1,6 +1,7 @@
 const express = require("express");
 const Connect = require("./Config/Config");
 const app = express();
+const bodyParser = require('body-parser');
 const { ServicesMain } = require("./Route/ServicesMain");
 const { ServicesSub } = require("./Route/ServicesSub");
 const { Event } = require("./Route/EventBooking");
@@ -18,7 +19,7 @@ app.use(
     origin: "*",
   })
 );
-
+app.use(bodyParser.json());
 app.use("/main", ServicesMain);
 app.use("/sub", ServicesSub);
 app.use("/event", Event);
