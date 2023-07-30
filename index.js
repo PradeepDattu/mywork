@@ -6,6 +6,7 @@ const { ServicesSub } = require("./Route/ServicesSub");
 const { Event } = require("./Route/EventBooking");
 const { Appointment } = require("./Route/Appointment");
 const { UsersRoute } = require("./Route/Users");
+const { GalleryRoute } = require("./Route/Gallery");
 const { AdminRoute } = require("./Route/Admin");
 const { pancham } = require("./Route/Panchanm");
 const { Horo } = require("./Route/Horoscope");
@@ -26,6 +27,7 @@ app.use("/pncha", pancham);
 app.use("/users", UsersRoute);
 app.use("/admin", AdminRoute);
 app.use("/horo", Horo);
+app.use("/gallery", GalleryRoute);
 app.use("/revenue", RevenueRoute);
 
 app.listen(8080, async (req, res) => {
