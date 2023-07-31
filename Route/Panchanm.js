@@ -35,26 +35,28 @@ pancham.get("/", async (req, res) => {
   const formattedDate = `${day}/${month}/${year}`;
   try {
     const data = await PanchamModel.find();
-    const { date } = data[0];
+
+    const { date } = data[0] || "30/07/2023";
     if (date == formattedDate) {
       res.send(data);
     } else {
       if (date) {
         await PanchamModel.deleteOne({ _id: data[0]._id });
       }
-   fetchAndStoreData(formattedDate,res);
+      fetchAndStoreData(formattedDate, res);
       // const Data = await PanchamModel.find();
       // res.send(Data);
     }
-  } catch {
+  } catch (error) {
     res.send("Errr");
+    console.log(error);
   }
 });
 module.exports = {
   pancham,
 };
 
-async function fetchAndStoreData(formattedDate,res) {
+async function fetchAndStoreData(formattedDate, res) {
   try {
     const currentDate = new Date();
     const formattedDateTime = currentDate.toISOString();
@@ -75,7 +77,7 @@ async function fetchAndStoreData(formattedDate,res) {
     const data = { data: response.data.data };
     const newData = new PanchamModel({ ...data, date: formattedDate });
     await newData.save();
-    res.send([data])
+    res.send([data]);
   } catch (error) {
     console.error("Error occurred:", error);
   }
@@ -84,8 +86,8 @@ async function getAccessToken() {
   try {
     const response = await axios.post("https://api.prokerala.com/token", {
       grant_type: "client_credentials",
-      client_id: "52cdd071-963a-4683-8220-0aff1233dba4", // Replace with your actual client ID
-      client_secret: "EFiYhSKkYXWdhtJ9PbkNXMyIB2L6WTZwtaBsN9Ug", // Replace with your actual client secret
+      client_id: "8d35571c-9b7d-450a-80d6-de06e7fa621d", // Replace with your actual client ID
+      client_secret: "T7uLtaSAMTyxKQLLeRdCKMD6P4hjonMLKLi1ZmBi", // Replace with your actual client secret
     });
 
     return response.data;
