@@ -13,6 +13,7 @@ const horoSchema = mongoose.Schema({
   POB:{type:String,default:null},
   message:{type: String},
   nakshatra:{type: String},
+  image:{type:String,default:null},
   paymentStatus:{type:Boolean,default:false},
   ammount:{type:Number,default:0},
   horoStatus:{type:String,default:"Pending"},
