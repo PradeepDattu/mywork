@@ -13,6 +13,7 @@ const usersSchema = mongoose.Schema({
   DOB: { type: String, default: null },
   TOB: { type: String, default: null },
   POB: { type: String, default: null },
+  image:{type:String,default:null}
 });
 
 const UsersModel = mongoose.model("users", usersSchema);
