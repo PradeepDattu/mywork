@@ -135,7 +135,61 @@ Event.post("/", async (req, res) => {
       bookingDate: formattedDate,
     });
     await data.save();
+
+    //telegram bot notifications
+
+    const handleSendNotification = () => {
+      const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
+      const messageBody = `New Event Details:
+
+      Name: ${payload.fname} ${payload.lname}
+      Phone: ${payload.phone}
+      Email: ${payload.email}
+      
+      Event Name: ${payload.eventName}
+      Event Date: ${payload.eventDate}
+      Event Time: ${payload.eventTime}
+
+      City: ${payload.city}
+      Full Address: ${payload.address} ${payload.district} ${payload.pincode}
+      
+      Message: ${payload.message}
+      
+      Booking Date: ${formattedDate}`;
+
+      const paylord = {
+        chat_id: -1001698776848,
+        text: messageBody,
+      };
+
+      const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+
+      fetch(telegramApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "cache-control": "no-cache",
+        },
+        body: JSON.stringify(paylord),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.ok) {
+            console.log("Message sent successfully!");
+          } else {
+            console.log("An error occurred!");
+          }
+        })
+        .catch((error) => {
+          console.log("Error occurred while sending the message!");
+          console.log(error);
+        });
+    };
+
     res.send(data);
+    handleSendNotification();
+
+    // res.send(data);
   } catch {
     res.send("err");
   }

@@ -67,14 +67,14 @@ Horo.post("/", async (req, res) => {
   let check = await UsersModel.find({ phone: payload.phone });
   const currentDate = new Date();
 
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth() + 1;
-    const year = currentDate.getFullYear();
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1;
+  const year = currentDate.getFullYear();
 
-    // Add leading zero to month if necessary
-    const formattedMonth = month < 10 ? `0${month}` : month;
-    const foramttedday = day < 10 ? `0${day}` : day;
-    const formattedDate = `${foramttedday}/${formattedMonth}/${year}`;
+  // Add leading zero to month if necessary
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const foramttedday = day < 10 ? `0${day}` : day;
+  const formattedDate = `${foramttedday}/${formattedMonth}/${year}`;
   try {
     if (check.length == 0) {
       const user = new UsersModel({
@@ -94,47 +94,99 @@ Horo.post("/", async (req, res) => {
 
     const userid = await UsersModel.find({ phone: payload.phone });
     const id = userid[0]._id;
-   if(check.length==0){
-    const data = new HoroModel({
-      ...payload,
-      userId: id,
-      horoDate: formattedDate,
-    });
-    await data.save();
-   }
-   else{
-    if (!userid[0].address) {
-      await UsersModel.findByIdAndUpdate(
-        { _id: id },
-        { address: payload.address }
-      );
+    if (check.length == 0) {
+      const data = new HoroModel({
+        ...payload,
+        userId: id,
+        horoDate: formattedDate,
+      });
+      await data.save();
+    } else {
+      if (!userid[0].address) {
+        await UsersModel.findByIdAndUpdate(
+          { _id: id },
+          { address: payload.address }
+        );
+      }
+      if (!userid[0].DOB) {
+        await UsersModel.findByIdAndUpdate({ _id: id }, { DOB: payload.DOB });
+      }
+      if (!userid[0].TOB) {
+        await UsersModel.findByIdAndUpdate({ _id: id }, { TOB: payload.TOB });
+      }
+      if (!userid[0].POB) {
+        await UsersModel.findByIdAndUpdate({ _id: id }, { POB: payload.POB });
+      }
+      if (!check[0].nakshatra) {
+        await UsersModel.findByIdAndUpdate(
+          { _id: id },
+          { nakshatra: payload.nakshatra }
+        );
+      }
+      const data = new HoroModel({
+        ...payload,
+        userId: id,
+        horoDate: formattedDate,
+      });
+      await data.save();
     }
-    if (!userid[0].DOB) {
-      await UsersModel.findByIdAndUpdate({ _id: id }, { DOB: payload.DOB });
-    }
-    if (!userid[0].TOB) {
-      await UsersModel.findByIdAndUpdate({ _id: id }, { TOB: payload.TOB });
-    }
-    if (!userid[0].POB) {
-      await UsersModel.findByIdAndUpdate({ _id: id }, { POB: payload.POB });
-    }
-    if (!check[0].nakshatra) {
-      await UsersModel.findByIdAndUpdate(
-        { _id: id },
-        { nakshatra: payload.nakshatra }
-      );
-    }
-    const data = new HoroModel({
-      ...payload,
-      userId: id,
-      horoDate: formattedDate,
-    });
-    await data.save();
-   }
-   
 
+    //telegram bot notifications
+
+    const handleSendNotification = () => {
+      const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
+      const messageBody = `New Astro Enquiry Details:
+
+    Name: ${payload.fname} ${payload.lname}
+    Phone: ${payload.phone}
+    Email: ${payload.email}
+
+    Astro Date: ${formattedDate}
+    Date Of Birth: ${payload.DOB}
+    Time Of Birth: ${payload.TOB}
+    Place OF Birth: ${payload.POB}
+    Nakshatra: ${payload.nakshatra} 
+
+    City: ${payload.city}
+    Full Address: ${payload.address}
+
+    Message: ${payload.message}
     
-    res.send("Post");
+    Booking Date: ${formattedDate}`;
+
+      const paylord = {
+        chat_id: -1001698776848,
+        text: messageBody,
+      };
+
+      const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+
+      fetch(telegramApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "cache-control": "no-cache",
+        },
+        body: JSON.stringify(paylord),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.ok) {
+            console.log("Message sent successfully!");
+          } else {
+            console.log("An error occurred!");
+          }
+        })
+        .catch((error) => {
+          console.log("Error occurred while sending the message!");
+          console.log(error);
+        });
+    };
+
+    res.send("post");
+    handleSendNotification();
+
+    // res.send("Post");
   } catch (err) {
     res.send("Post ERRoR");
     console.log(err);
@@ -142,38 +194,34 @@ Horo.post("/", async (req, res) => {
 });
 
 Horo.delete("/:id", async (req, res) => {
-
-
-
   const id = req.params.id;
   try {
     const data = await HoroModel.find({ _id: id });
     const payment = data[0].paymentStatus;
     const amount = data[0].ammount;
-   
+
     const user = await UsersModel.find({ _id: data[0].userId });
     let { paidAmmount } = user[0];
     let { remainAmmount } = user[0];
-    if(payment){
+    if (payment) {
       paidAmmount -= amount;
       await UsersModel.findByIdAndUpdate(
         { _id: data[0].userId },
-  
-        { paidAmmount}
+
+        { paidAmmount }
       );
-    }
-    else{
+    } else {
       remainAmmount -= amount;
       await UsersModel.findByIdAndUpdate(
         { _id: data[0].userId },
-  
-        {remainAmmount }
+
+        { remainAmmount }
       );
     }
     await HoroModel.findByIdAndDelete({ _id: id });
     res.send("Delete Success");
-  } catch(err) {
-    console.log(err)
+  } catch (err) {
+    console.log(err);
     res.send("Delete Error");
   }
 });
@@ -187,7 +235,6 @@ Horo.patch("/:id", async (req, res) => {
   // } catch {
   //   res.send("Update Error");
   // }
-
 
   const id = req.params.id;
   const payload = req.body;
@@ -207,10 +254,8 @@ Horo.patch("/:id", async (req, res) => {
     let { remainAmmount } = user[0];
 
     if (payment == paymentnew) {
-      
       console.log(amount, amountnew);
       if (amount != amountnew) {
-        
         if (paymentnew) {
           paidAmmount += amountnew - amount;
         } else {
