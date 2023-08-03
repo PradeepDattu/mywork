@@ -124,7 +124,7 @@ Appointment.post("/", async (req, res) => {
       
       Message: ${payload.message}
       
-      Booking Date: ${formattedDate}`;
+      Submitted on ${formattedDate}`;
 
       const paylord = {
         chat_id: -1001698776848,
