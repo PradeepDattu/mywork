@@ -184,14 +184,32 @@ Event.delete("/:id", async (req, res) => {
 Event.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const payload = req.body;
-
+console.log(payload)
   try {
     const data = await EventModel.find({ _id: id });
     const payment = data[0].paymentStatus;
     const amount = data[0].ammount;
     const expenses = data[0].expense;
+    if(payload.authorMessage){
 
-    await EventModel.findByIdAndUpdate({ _id: id }, { ...payload });
+      const currentDate = new Date();
+
+      const day = currentDate.getDate();
+      const month = currentDate.getMonth() + 1;
+      const year = currentDate.getFullYear();
+      
+      // Add leading zero to month if necessary
+      const formattedMonth = month < 10 ? `0${month}` : month;
+      const formattedday= day <10 ?`0${day}`: day;
+      const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
+      const massege=payload.authorMessage+" "+"Updated Date"+": "+formattedDate
+      console.log(massege)
+      await EventModel.findByIdAndUpdate({ _id: id }, {...payload,authorMessage:massege});
+     
+    }
+    else{
+      await EventModel.findByIdAndUpdate({ _id: id }, { ...payload });
+    }
     const newdata = await EventModel.find({ _id: id });
     const paymentnew = newdata[0].paymentStatus;
     const amountnew = newdata[0].ammount;

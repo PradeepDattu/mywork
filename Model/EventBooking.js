@@ -9,7 +9,7 @@ const eventSchema = mongoose.Schema({
   phone: { type: String, required: true },
   bookingDate:{ type: String, required: true },
   email: { type: String},
-  pincode: { type: String, require: true },
+  pincode: { type: String, require: true }, 
   eventDate: { type: String, require: true },
   city:{ type: String, default:null },
   message: { type: String },

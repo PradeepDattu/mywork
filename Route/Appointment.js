@@ -124,11 +124,32 @@ Appointment.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const payload = req.body;
   try {
-    await AppointmentModel.findByIdAndUpdate({ _id: id }, payload);
+    if(payload.authorMessage){
+
+      const currentDate = new Date();
+
+      const day = currentDate.getDate();
+      const month = currentDate.getMonth() + 1;
+      const year = currentDate.getFullYear();
+      
+      // Add leading zero to month if necessary
+      const formattedMonth = month < 10 ? `0${month}` : month;
+      const formattedday= day <10 ?`0${day}`: day;
+      const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
+      const massege=payload.authorMessage+" "+"Updated Date"+": "+formattedDate
+      console.log(massege)
+      await AppointmentModel.findByIdAndUpdate({ _id: id }, {...payload,authorMessage:massege});
+      res.send("Update Success");
+    }
+    else{
+      await AppointmentModel.findByIdAndUpdate({ _id: id }, payload);
     res.send("Update Success");
+    }
+
+
   } catch {
     res.send("Update Error");
-  }
+  } 
 });
 
 module.exports = {

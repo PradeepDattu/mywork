@@ -35,12 +35,12 @@ function convertToDate(dateStr) {
 }
 RevenueRoute.get("/", async (req, res) => {
   const startDateStr = req.query.from;
-  const endDateStr = req.query.to;
+  const endDateStr = req.query.to; 
 
   // Date constructor expects date components in the order: year, month, day
   const startDate = convertToDate(startDateStr);
   const endDate = convertToDate(endDateStr);
-  // console.log(startDate, endDate);
+
   try {
     const events = await EventModel.find();
     const eventsInRange = events.filter((event) => {
@@ -54,7 +54,12 @@ RevenueRoute.get("/", async (req, res) => {
       return horoDate >= startDate && horoDate <= endDate;
     });
     const rev = new RevenueModel();
-
+ rev.event= eventsInRange
+ .filter((dat) => dat.paymentStatus == true)
+ .reduce((total, event) => total + event.ammount, 0) 
+ rev.astro=astroInRange
+ .filter((dat) => dat.paymentStatus == true)
+ .reduce((total, event) => total + event.ammount, 0);
     rev.paid =
       eventsInRange
         .filter((dat) => dat.paymentStatus == true)

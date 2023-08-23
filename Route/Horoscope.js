@@ -196,8 +196,26 @@ Horo.patch("/:id", async (req, res) => {
     const data = await HoroModel.find({ _id: id });
     const payment = data[0].paymentStatus;
     const amount = data[0].ammount;
+    if(payload.authorMessage){
 
-    await HoroModel.findByIdAndUpdate({ _id: id }, { ...payload });
+      const currentDate = new Date();
+
+      const day = currentDate.getDate();
+      const month = currentDate.getMonth() + 1;
+      const year = currentDate.getFullYear();
+      
+      // Add leading zero to month if necessary
+      const formattedMonth = month < 10 ? `0${month}` : month;
+      const formattedday= day <10 ?`0${day}`: day;
+      const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
+      const massege=payload.authorMessage+" "+"Updated Date"+": "+formattedDate
+      console.log(massege)
+      await HoroModel.findByIdAndUpdate({ _id: id }, {...payload,authorMessage:massege});
+    
+    }
+    else{
+      await HoroModel.findByIdAndUpdate({ _id: id }, { ...payload });
+    }
     const newdata = await HoroModel.find({ _id: id });
     const paymentnew = newdata[0].paymentStatus;
     const amountnew = newdata[0].ammount;
