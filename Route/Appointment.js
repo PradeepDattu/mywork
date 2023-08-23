@@ -55,7 +55,6 @@ Appointment.get("/", async (req, res) => {
   }
 });
 
-
 Appointment.get("/:id", async (req, res) => {
   const id = req.params.id;
   try {
@@ -83,10 +82,10 @@ Appointment.post("/", async (req, res) => {
   const day = currentDate.getDate();
   const month = currentDate.getMonth() + 1;
   const year = currentDate.getFullYear();
-  
+
   // Add leading zero to month if necessary
   const formattedMonth = month < 10 ? `0${month}` : month;
-  const formattedday= day <10 ?`0${day}`: day;
+  const formattedday = day < 10 ? `0${day}` : day;
   const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
   try {
     if (check.length == 0) {
@@ -96,14 +95,68 @@ Appointment.post("/", async (req, res) => {
         lname: payload.lname ? payload.lname : "",
         email: payload.email ? payload.email : "",
       });
-      await user.save(); 
+      await user.save();
       console.log("user save");
     }
     const userid = await UsersModel.find({ phone: payload.phone });
     const id = userid[0]._id;
-    const data = new AppointmentModel({ ...payload, userId: id,bookingDate:formattedDate });
+    const data = new AppointmentModel({
+      ...payload,
+      userId: id,
+      bookingDate: formattedDate,
+    });
     await data.save();
-    res.send(data); 
+
+    //telegram bot notifications
+
+    const handleSendNotification = () => {
+      const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
+      const messageBody = `New Appointment Details:
+
+      Name: ${payload.fname} ${payload.lname}
+      Phone: ${payload.phone}
+      Email: ${payload.email}
+
+      Appointment Date: ${payload.appointmentDate}
+      Appointment Time: ${payload.appointmentTime}
+
+      City: ${payload.city}
+      
+      Message: ${payload.message}
+      
+      Submitted on ${formattedDate}`;
+
+      const paylord = {
+        chat_id: -1001698776848,
+        text: messageBody,
+      };
+
+      const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+
+      fetch(telegramApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "cache-control": "no-cache",
+        },
+        body: JSON.stringify(paylord),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.ok) {
+            console.log("Message sent successfully!");
+          } else {
+            console.log("An error occurred!");
+          }
+        })
+        .catch((error) => {
+          console.log("Error occurred while sending the message!");
+          console.log(error);
+        });
+    };
+
+    res.send(data);
+    handleSendNotification();
   } catch (err) {
     res.send("Post ERRoR");
     console.log(err);
