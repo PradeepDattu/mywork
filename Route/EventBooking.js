@@ -37,7 +37,7 @@ Event.get("/", async (req, res) => {
         const [dayB, monthB, yearB] = b.eventDate.split("/");
         const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
         const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-        return dateB - dateA;
+        return dateA - dateB;
       });
     const pastDates = data
       .filter((item) => item.eventDate < currentDate)
