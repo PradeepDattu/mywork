@@ -35,7 +35,7 @@ function convertToDate(dateStr) {
 }
 RevenueRoute.get("/", async (req, res) => {
   const startDateStr = req.query.from;
-  const endDateStr = req.query.to; 
+  const endDateStr = req.query.to;
 
   // Date constructor expects date components in the order: year, month, day
   const startDate = convertToDate(startDateStr);
@@ -54,12 +54,21 @@ RevenueRoute.get("/", async (req, res) => {
       return horoDate >= startDate && horoDate <= endDate;
     });
     const rev = new RevenueModel();
- rev.event= eventsInRange
- .filter((dat) => dat.paymentStatus == true)
- .reduce((total, event) => total + event.ammount, 0) 
- rev.astro=astroInRange
- .filter((dat) => dat.paymentStatus == true)
- .reduce((total, event) => total + event.ammount, 0);
+    rev.event = eventsInRange
+      .filter((dat) => dat.paymentStatus == true)
+      .reduce((total, event) => total + event.ammount, 0);
+
+    rev.astro = astroInRange
+      .filter((dat) => dat.paymentStatus == true)
+      .reduce((total, event) => total + event.ammount, 0);
+
+    rev.eventUnpaid = eventsInRange
+      .filter((dat) => dat.paymentStatus == false)
+      .reduce((total, event) => total + event.ammount, 0);
+
+    rev.astroUnpaid = astroInRange
+      .filter((dat) => dat.paymentStatus == false)
+      .reduce((total, event) => total + event.ammount, 0);
     rev.paid =
       eventsInRange
         .filter((dat) => dat.paymentStatus == true)
@@ -67,16 +76,21 @@ RevenueRoute.get("/", async (req, res) => {
       astroInRange
         .filter((dat) => dat.paymentStatus == true)
         .reduce((total, event) => total + event.ammount, 0);
-    rev.unpaid = eventsInRange
-      .filter((dat) => dat.paymentStatus == false)
-      .reduce((total, event) => total + event.ammount, 0);
+    rev.unpaid =
+      eventsInRange
+        .filter((dat) => dat.paymentStatus == false)
+        .reduce((total, event) => total + event.ammount, 0) +
+      astroInRange
+        .filter((dat) => dat.paymentStatus == false)
+        .reduce((total, event) => total + event.ammount, 0);
     rev.expense = eventsInRange.reduce(
       (total, event) => total + event.expense,
       0
     );
     rev.transaction = rev.paid + rev.unpaid;
     rev.net = rev.transaction - rev.expense;
-
+    rev.netEvent = rev.event + rev.eventUnpaid - rev.expense;
+    rev.netAstor = rev.astro + rev.astroUnpaid;
     // Rest of your code to calculate revenue goes here...
 
     res.send(rev);
