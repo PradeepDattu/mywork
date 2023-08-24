@@ -29,34 +29,14 @@ Event.get("/", async (req, res) => {
     } else {
       data = await EventModel.find().sort({ eventDate: "asc" }).exec();
     }
-    const currentDate = new Date();
-    const futureDates = data
-      .filter((item) => item.eventDate >= currentDate)
-      .sort((a, b) => {
-        const [dayA, monthA, yearA] = a.eventDate.split("/");
-        const [dayB, monthB, yearB] = b.eventDate.split("/");
-        const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
-        const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-        return dateA - dateB;
-      });
-    const pastDates = data
-      .filter((item) => item.eventDate < currentDate)
-      .sort((a, b) => {
-        const [dayA, monthA, yearA] = a.eventDate.split("/");
-        const [dayB, monthB, yearB] = b.eventDate.split("/");
-        const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
-        const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-        return dateB - dateA;
-      });
-    const sortedData = futureDates.concat(pastDates);
 
-    // const sortedData = data.sort((a, b) => {
-    //   const [dayA, monthA, yearA] = a.eventDate.split("/");
-    //   const [dayB, monthB, yearB] = b.eventDate.split("/");
-    //   const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
-    //   const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-    //   return dateB - dateA;
-    // });
+    const sortedData = data.sort((a, b) => {
+      const [dayA, monthA, yearA] = a.eventDate.split("/");
+      const [dayB, monthB, yearB] = b.eventDate.split("/");
+      const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
+      const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
+      return dateB - dateA;
+    });
 
     res.send(sortedData);
   } catch (err) {
