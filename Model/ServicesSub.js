@@ -10,6 +10,7 @@ const servicesSubSchema = mongoose.Schema({
   sdescription: { type: String },
   samegri: { type: String },
   wedo: { type: String },
+  starting: { type: Number },
 });
 
 const ServicesSubModel = mongoose.model("servicesSub", servicesSubSchema);
