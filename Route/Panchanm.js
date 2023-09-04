@@ -86,8 +86,8 @@ async function getAccessToken() {
   try {
     const response = await axios.post("https://api.prokerala.com/token", {
       grant_type: "client_credentials",
-      client_id: "8d35571c-9b7d-450a-80d6-de06e7fa621d", // Replace with your actual client ID
-      client_secret: "T7uLtaSAMTyxKQLLeRdCKMD6P4hjonMLKLi1ZmBi", // Replace with your actual client secret
+      client_id: "a617db27-a719-4b0b-881f-e247ca31d082", // Replace with your actual client ID
+      client_secret: "IF15U6uvmibYFwgAIluyQLzc31IRNFQg4Ln4FTxN", // Replace with your actual client secret
     });
 
     return response.data;
