@@ -6,6 +6,7 @@ const ServicesSub = express.Router();
 ServicesSub.get("/", async (req, res) => {
   try {
     const data = await ServicesSubModel.find();
+    data.sort((a, b) => a.starting - b.starting);
     res.send(data);
   } catch {
     res.send("Error");

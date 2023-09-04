@@ -35,7 +35,7 @@ Event.get("/", async (req, res) => {
       const [dayB, monthB, yearB] = b.eventDate.split("/");
       const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
       const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-      return dateB - dateA;
+      return dateA - dateB;
     });
 
     res.send(sortedData);
@@ -140,6 +140,7 @@ Event.post("/", async (req, res) => {
 
     const handleSendNotification = () => {
       const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
+      const telegram_bot_id2 = "6558514800:AAHRkRYVnn4s9Sr0XhGDOMEUWJaDazeV15k";
       const messageBody = `New Event Details:
 
       Name: ${payload.fname} ${payload.lname}
@@ -161,8 +162,13 @@ Event.post("/", async (req, res) => {
         chat_id: -1001698776848,
         text: messageBody,
       };
+      const paylord2 = {
+        chat_id: -1001980872134,
+        text: messageBody,
+      };
 
       const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+      const telegramApiUrl2 = `https://api.telegram.org/bot${telegram_bot_id2}/sendMessage`;
 
       fetch(telegramApiUrl, {
         method: "POST",
@@ -171,6 +177,27 @@ Event.post("/", async (req, res) => {
           "cache-control": "no-cache",
         },
         body: JSON.stringify(paylord),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.ok) {
+            console.log("Message sent successfully!");
+          } else {
+            console.log("An error occurred!");
+          }
+        })
+        .catch((error) => {
+          console.log("Error occurred while sending the message!");
+          console.log(error);
+        });
+
+      fetch(telegramApiUrl2, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "cache-control": "no-cache",
+        },
+        body: JSON.stringify(paylord2),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -238,30 +265,31 @@ Event.delete("/:id", async (req, res) => {
 Event.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const payload = req.body;
-console.log(payload)
+  console.log(payload);
   try {
     const data = await EventModel.find({ _id: id });
     const payment = data[0].paymentStatus;
     const amount = data[0].ammount;
     const expenses = data[0].expense;
-    if(payload.authorMessage){
-
+    if (payload.authorMessage) {
       const currentDate = new Date();
 
       const day = currentDate.getDate();
       const month = currentDate.getMonth() + 1;
       const year = currentDate.getFullYear();
-      
+
       // Add leading zero to month if necessary
       const formattedMonth = month < 10 ? `0${month}` : month;
-      const formattedday= day <10 ?`0${day}`: day;
+      const formattedday = day < 10 ? `0${day}` : day;
       const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
-      const massege=payload.authorMessage+" "+"Updated Date"+": "+formattedDate
-      console.log(massege)
-      await EventModel.findByIdAndUpdate({ _id: id }, {...payload,authorMessage:massege});
-     
-    }
-    else{
+      const massege =
+        payload.authorMessage + " " + "Updated Date" + ": " + formattedDate;
+      console.log(massege);
+      await EventModel.findByIdAndUpdate(
+        { _id: id },
+        { ...payload, authorMessage: massege }
+      );
+    } else {
       await EventModel.findByIdAndUpdate({ _id: id }, { ...payload });
     }
     const newdata = await EventModel.find({ _id: id });
