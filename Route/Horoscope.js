@@ -133,58 +133,58 @@ Horo.post("/", async (req, res) => {
 
     //telegram bot notifications
 
-    const handleSendNotification = () => {
-      const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
-      const messageBody = `New Astro Enquiry Details:
+    // const handleSendNotification = () => {
+    //   const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
+    //   const messageBody = `New Astro Enquiry Details:
 
-    Name: ${payload.fname} ${payload.lname}
-    Phone: ${payload.phone}
-    Email: ${payload.email}
+    // Name: ${payload.fname} ${payload.lname}
+    // Phone: ${payload.phone}
+    // Email: ${payload.email}
 
-    Astro Date: ${formattedDate}
-    Date Of Birth: ${payload.DOB}
-    Time Of Birth: ${payload.TOB}
-    Place OF Birth: ${payload.POB}
-    Nakshatra: ${payload.nakshatra} 
+    // Astro Date: ${formattedDate}
+    // Date Of Birth: ${payload.DOB}
+    // Time Of Birth: ${payload.TOB}
+    // Place OF Birth: ${payload.POB}
+    // Nakshatra: ${payload.nakshatra}
 
-    City: ${payload.city}
-    Full Address: ${payload.address}
+    // City: ${payload.city}
+    // Full Address: ${payload.address}
 
-    Message: ${payload.message}
-    
-    Submitted on ${formattedDate}`;
+    // Message: ${payload.message}
 
-      const paylord = {
-        chat_id: -1001698776848,
-        text: messageBody,
-      };
+    // Submitted on ${formattedDate}`;
 
-      const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+    //   const paylord = {
+    //     chat_id: -1001698776848,
+    //     text: messageBody,
+    //   };
 
-      fetch(telegramApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "cache-control": "no-cache",
-        },
-        body: JSON.stringify(paylord),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.ok) {
-            console.log("Message sent successfully!");
-          } else {
-            console.log("An error occurred!");
-          }
-        })
-        .catch((error) => {
-          console.log("Error occurred while sending the message!");
-          console.log(error);
-        });
-    };
+    //   const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+
+    //   fetch(telegramApiUrl, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "cache-control": "no-cache",
+    //     },
+    //     body: JSON.stringify(paylord),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       if (data.ok) {
+    //         console.log("Message sent successfully!");
+    //       } else {
+    //         console.log("An error occurred!");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log("Error occurred while sending the message!");
+    //       console.log(error);
+    //     });
+    // };
 
     res.send("post");
-    handleSendNotification();
+    // handleSendNotification();
 
     // res.send("Post");
   } catch (err) {
@@ -243,24 +243,25 @@ Horo.patch("/:id", async (req, res) => {
     const data = await HoroModel.find({ _id: id });
     const payment = data[0].paymentStatus;
     const amount = data[0].ammount;
-    if(payload.authorMessage){
-
+    if (payload.authorMessage) {
       const currentDate = new Date();
 
       const day = currentDate.getDate();
       const month = currentDate.getMonth() + 1;
       const year = currentDate.getFullYear();
-      
+
       // Add leading zero to month if necessary
       const formattedMonth = month < 10 ? `0${month}` : month;
-      const formattedday= day <10 ?`0${day}`: day;
+      const formattedday = day < 10 ? `0${day}` : day;
       const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
-      const massege=payload.authorMessage+" "+"Updated Date"+": "+formattedDate
-      console.log(massege)
-      await HoroModel.findByIdAndUpdate({ _id: id }, {...payload,authorMessage:massege});
-    
-    }
-    else{
+      const massege =
+        payload.authorMessage + " " + "Updated Date" + ": " + formattedDate;
+      console.log(massege);
+      await HoroModel.findByIdAndUpdate(
+        { _id: id },
+        { ...payload, authorMessage: massege }
+      );
+    } else {
       await HoroModel.findByIdAndUpdate({ _id: id }, { ...payload });
     }
     const newdata = await HoroModel.find({ _id: id });

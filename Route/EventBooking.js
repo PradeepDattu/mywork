@@ -138,83 +138,83 @@ Event.post("/", async (req, res) => {
 
     //telegram bot notifications
 
-    const handleSendNotification = () => {
-      const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
-      const telegram_bot_id2 = "6558514800:AAHRkRYVnn4s9Sr0XhGDOMEUWJaDazeV15k";
-      const messageBody = `New Event Details:
+    // const handleSendNotification = () => {
+    //   const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
+    //   const telegram_bot_id2 = "6558514800:AAHRkRYVnn4s9Sr0XhGDOMEUWJaDazeV15k";
+    //   const messageBody = `New Event Details:
 
-      Name: ${payload.fname} ${payload.lname}
-      Phone: ${payload.phone}
-      Email: ${payload.email}
-      
-      Event Name: ${payload.eventName}
-      Event Date: ${payload.eventDate}
-      Event Time: ${payload.eventTime}
+    //   Name: ${payload.fname} ${payload.lname}
+    //   Phone: ${payload.phone}
+    //   Email: ${payload.email}
 
-      City: ${payload.city}
-      Full Address: ${payload.address} ${payload.district} ${payload.pincode}
-      
-      Message: ${payload.message}
-      
-      Submitted on ${formattedDate}`;
+    //   Event Name: ${payload.eventName}
+    //   Event Date: ${payload.eventDate}
+    //   Event Time: ${payload.eventTime}
 
-      const paylord = {
-        chat_id: -1001698776848,
-        text: messageBody,
-      };
-      const paylord2 = {
-        chat_id: -1001980872134,
-        text: messageBody,
-      };
+    //   City: ${payload.city}
+    //   Full Address: ${payload.address} ${payload.district} ${payload.pincode}
 
-      const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
-      const telegramApiUrl2 = `https://api.telegram.org/bot${telegram_bot_id2}/sendMessage`;
+    //   Message: ${payload.message}
 
-      fetch(telegramApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "cache-control": "no-cache",
-        },
-        body: JSON.stringify(paylord),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.ok) {
-            console.log("Message sent successfully!");
-          } else {
-            console.log("An error occurred!");
-          }
-        })
-        .catch((error) => {
-          console.log("Error occurred while sending the message!");
-          console.log(error);
-        });
+    //   Submitted on ${formattedDate}`;
 
-      fetch(telegramApiUrl2, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "cache-control": "no-cache",
-        },
-        body: JSON.stringify(paylord2),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.ok) {
-            console.log("Message sent successfully!");
-          } else {
-            console.log("An error occurred!");
-          }
-        })
-        .catch((error) => {
-          console.log("Error occurred while sending the message!");
-          console.log(error);
-        });
-    };
+    //   const paylord = {
+    //     chat_id: -1001698776848,
+    //     text: messageBody,
+    //   };
+    //   const paylord2 = {
+    //     chat_id: -1001980872134,
+    //     text: messageBody,
+    //   };
+
+    //   const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+    //   const telegramApiUrl2 = `https://api.telegram.org/bot${telegram_bot_id2}/sendMessage`;
+
+    //   fetch(telegramApiUrl, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "cache-control": "no-cache",
+    //     },
+    //     body: JSON.stringify(paylord),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       if (data.ok) {
+    //         console.log("Message sent successfully!");
+    //       } else {
+    //         console.log("An error occurred!");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log("Error occurred while sending the message!");
+    //       console.log(error);
+    //     });
+
+    //   fetch(telegramApiUrl2, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "cache-control": "no-cache",
+    //     },
+    //     body: JSON.stringify(paylord2),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       if (data.ok) {
+    //         console.log("Message sent successfully!");
+    //       } else {
+    //         console.log("An error occurred!");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log("Error occurred while sending the message!");
+    //       console.log(error);
+    //     });
+    // };
 
     res.send(data);
-    handleSendNotification();
+    // handleSendNotification();
 
     // res.send(data);
   } catch {

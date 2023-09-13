@@ -109,54 +109,54 @@ Appointment.post("/", async (req, res) => {
 
     //telegram bot notifications
 
-    const handleSendNotification = () => {
-      const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
-      const messageBody = `New Appointment Details:
+    // const handleSendNotification = () => {
+    //   const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
+    //   const messageBody = `New Appointment Details:
 
-      Name: ${payload.fname} ${payload.lname}
-      Phone: ${payload.phone}
-      Email: ${payload.email}
+    //   Name: ${payload.fname} ${payload.lname}
+    //   Phone: ${payload.phone}
+    //   Email: ${payload.email}
 
-      Appointment Date: ${payload.appointmentDate}
-      Appointment Time: ${payload.appointmentTime}
+    //   Appointment Date: ${payload.appointmentDate}
+    //   Appointment Time: ${payload.appointmentTime}
 
-      City: ${payload.city}
-      
-      Message: ${payload.message}
-      
-      Submitted on ${formattedDate}`;
+    //   City: ${payload.city}
 
-      const paylord = {
-        chat_id: -1001698776848,
-        text: messageBody,
-      };
+    //   Message: ${payload.message}
 
-      const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+    //   Submitted on ${formattedDate}`;
 
-      fetch(telegramApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "cache-control": "no-cache",
-        },
-        body: JSON.stringify(paylord),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.ok) {
-            console.log("Message sent successfully!");
-          } else {
-            console.log("An error occurred!");
-          }
-        })
-        .catch((error) => {
-          console.log("Error occurred while sending the message!");
-          console.log(error);
-        });
-    };
+    //   const paylord = {
+    //     chat_id: -1001698776848,
+    //     text: messageBody,
+    //   };
+
+    //   const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+
+    //   fetch(telegramApiUrl, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "cache-control": "no-cache",
+    //     },
+    //     body: JSON.stringify(paylord),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       if (data.ok) {
+    //         console.log("Message sent successfully!");
+    //       } else {
+    //         console.log("An error occurred!");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log("Error occurred while sending the message!");
+    //       console.log(error);
+    //     });
+    // };
 
     res.send(data);
-    handleSendNotification();
+    // handleSendNotification();
   } catch (err) {
     res.send("Post ERRoR");
     console.log(err);
@@ -177,32 +177,32 @@ Appointment.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const payload = req.body;
   try {
-    if(payload.authorMessage){
-
+    if (payload.authorMessage) {
       const currentDate = new Date();
 
       const day = currentDate.getDate();
       const month = currentDate.getMonth() + 1;
       const year = currentDate.getFullYear();
-      
+
       // Add leading zero to month if necessary
       const formattedMonth = month < 10 ? `0${month}` : month;
-      const formattedday= day <10 ?`0${day}`: day;
+      const formattedday = day < 10 ? `0${day}` : day;
       const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
-      const massege=payload.authorMessage+" "+"Updated Date"+": "+formattedDate
-      console.log(massege)
-      await AppointmentModel.findByIdAndUpdate({ _id: id }, {...payload,authorMessage:massege});
+      const massege =
+        payload.authorMessage + " " + "Updated Date" + ": " + formattedDate;
+      console.log(massege);
+      await AppointmentModel.findByIdAndUpdate(
+        { _id: id },
+        { ...payload, authorMessage: massege }
+      );
+      res.send("Update Success");
+    } else {
+      await AppointmentModel.findByIdAndUpdate({ _id: id }, payload);
       res.send("Update Success");
     }
-    else{
-      await AppointmentModel.findByIdAndUpdate({ _id: id }, payload);
-    res.send("Update Success");
-    }
-
-
   } catch {
     res.send("Update Error");
-  } 
+  }
 });
 
 module.exports = {
