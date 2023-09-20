@@ -133,58 +133,58 @@ Horo.post("/", async (req, res) => {
 
     //telegram bot notifications
 
-    // const handleSendNotification = () => {
-    //   const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
-    //   const messageBody = `New Astro Enquiry Details:
+    const handleSendNotification = () => {
+      const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
+      const messageBody = `New Astro Enquiry Details:
 
-    // Name: ${payload.fname} ${payload.lname}
-    // Phone: ${payload.phone}
-    // Email: ${payload.email}
+    Name: ${payload.fname} ${payload.lname}
+    Phone: ${payload.phone}
+    Email: ${payload.email}
 
-    // Astro Date: ${formattedDate}
-    // Date Of Birth: ${payload.DOB}
-    // Time Of Birth: ${payload.TOB}
-    // Place OF Birth: ${payload.POB}
-    // Nakshatra: ${payload.nakshatra}
+    Astro Date: ${formattedDate}
+    Date Of Birth: ${payload.DOB}
+    Time Of Birth: ${payload.TOB}
+    Place OF Birth: ${payload.POB}
+    Nakshatra: ${payload.nakshatra}
 
-    // City: ${payload.city}
-    // Full Address: ${payload.address}
+    City: ${payload.city}
+    Full Address: ${payload.address}
 
-    // Message: ${payload.message}
+    Message: ${payload.message}
 
-    // Submitted on ${formattedDate}`;
+    Submitted on ${formattedDate}`;
 
-    //   const paylord = {
-    //     chat_id: -1001698776848,
-    //     text: messageBody,
-    //   };
+      const paylord = {
+        chat_id: -1001698776848,
+        text: messageBody,
+      };
 
-    //   const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+      const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
 
-    //   fetch(telegramApiUrl, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "cache-control": "no-cache",
-    //     },
-    //     body: JSON.stringify(paylord),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       if (data.ok) {
-    //         console.log("Message sent successfully!");
-    //       } else {
-    //         console.log("An error occurred!");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log("Error occurred while sending the message!");
-    //       console.log(error);
-    //     });
-    // };
+      fetch(telegramApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "cache-control": "no-cache",
+        },
+        body: JSON.stringify(paylord),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.ok) {
+            console.log("Message sent successfully!");
+          } else {
+            console.log("An error occurred!");
+          }
+        })
+        .catch((error) => {
+          console.log("Error occurred while sending the message!");
+          console.log(error);
+        });
+    };
 
     res.send("post");
-    // handleSendNotification();
+    handleSendNotification();
 
     // res.send("Post");
   } catch (err) {
