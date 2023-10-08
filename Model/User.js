@@ -10,10 +10,11 @@ const usersSchema = mongoose.Schema({
   expense: { type: Number, default: 0 },
   address: { type: String, default: null },
   nakshatra: { type: String, default: null },
+  gothram: { type: String, default: null },
   DOB: { type: String, default: null },
   TOB: { type: String, default: null },
   POB: { type: String, default: null },
-  image:{type:String,default:null}
+  image: { type: String, default: null },
 });
 
 const UsersModel = mongoose.model("users", usersSchema);
