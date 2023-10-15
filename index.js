@@ -14,7 +14,6 @@ const { Horo } = require("./Route/Horoscope");
 const { RevenueRoute } = require("./Route/Revenue");
 const { YoutubeRoute } = require("./Route/Youtube");
 const cors = require("cors");
-const { YoutubeRoute } = require("./Route/Youtube");
 app.use(express.json());
 app.use(
   cors({

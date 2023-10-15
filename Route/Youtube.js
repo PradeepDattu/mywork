@@ -16,7 +16,7 @@ YoutubeRoute.post("/", async (req, res) => {
 });
 
 // Update YouTube links (using PUT request)
-app.put("/", async (req, res) => {
+YoutubeRoute.put("/", async (req, res) => {
   try {
     const existingLinks = await YoutubeModel.findOne();
     if (!existingLinks) {
