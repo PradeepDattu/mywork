@@ -23,10 +23,10 @@ const eventSchema = mongoose.Schema({
   address: { type: String, require: true },
   district: { type: String },
   authorMessage: { type: String, default: null },
-  gothramDetails: [
+  gautarm: [
     {
-      pname: String,
-      pgothram: String,
+      name: String,
+      gautaram: String,
     },
   ],
 });
