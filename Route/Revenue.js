@@ -43,10 +43,18 @@ RevenueRoute.get("/", async (req, res) => {
 
   try {
     const events = await EventModel.find();
-    const eventsInRange = events.filter((event) => {
-      const eventDate = convertToDate(event.eventDate);
-      return eventDate >= startDate && eventDate <= endDate;
-    });
+    const eventsInRange = events
+      .filter((event) => {
+        const eventDate = convertToDate(event.eventDate);
+        return eventDate >= startDate && eventDate <= endDate;
+      })
+      .filter((event) => event.eventName != "Kashiyatra");
+    const kashiInRange = events
+      .filter((event) => {
+        const eventDate = convertToDate(event.eventDate);
+        return eventDate >= startDate && eventDate <= endDate;
+      })
+      .filter((event) => event.eventName == "Kashiyatra");
     // console.log(eventsInRange);
     const astroData = await HoroModel.find();
     const astroInRange = astroData.filter((asto) => {
@@ -58,11 +66,19 @@ RevenueRoute.get("/", async (req, res) => {
       .filter((dat) => dat.paymentStatus == true)
       .reduce((total, event) => total + event.ammount, 0);
 
+    rev.kashi = kashiInRange
+      .filter((dat) => dat.paymentStatus == true)
+      .reduce((total, event) => total + event.ammount, 0);
+
     rev.astro = astroInRange
       .filter((dat) => dat.paymentStatus == true)
       .reduce((total, event) => total + event.ammount, 0);
 
     rev.eventUnpaid = eventsInRange
+      .filter((dat) => dat.paymentStatus == false)
+      .reduce((total, event) => total + event.ammount, 0);
+
+    rev.kashiUnpaid = kashiInRange
       .filter((dat) => dat.paymentStatus == false)
       .reduce((total, event) => total + event.ammount, 0);
 
@@ -87,10 +103,16 @@ RevenueRoute.get("/", async (req, res) => {
       (total, event) => total + event.expense,
       0
     );
+    rev.kashiExpense = kashiInRange.reduce(
+      (total, event) => total + event.expense,
+      0
+    );
+
     rev.transaction = rev.paid + rev.unpaid;
     rev.net = rev.transaction - rev.expense;
     rev.netEvent = rev.event + rev.eventUnpaid - rev.expense;
     rev.netAstor = rev.astro + rev.astroUnpaid;
+    rev.netKashi = rev.kashi + rev.kashiUnpaid - rev.kashiExpense;
     // Rest of your code to calculate revenue goes here...
 
     res.send(rev);
