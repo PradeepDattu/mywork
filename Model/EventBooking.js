@@ -22,6 +22,7 @@ const eventSchema = mongoose.Schema({
   expense: { type: Number, default: 0 },
   address: { type: String, require: true },
   district: { type: String },
+  gotram: { type: String },
   authorMessage: { type: String, default: null },
   gautarm: [
     {

@@ -113,6 +113,7 @@ Event.post("/", async (req, res) => {
         lname: payload.lname ? payload.lname : "",
         email: payload.email ? payload.email : "",
         address: `${payload.address}, ${payload.pincode}, ${payload.district}`,
+        gothram: payload.gotram ? payload.gotram : "",
       });
       await user.save();
       console.log("user save");
@@ -125,7 +126,15 @@ Event.post("/", async (req, res) => {
       await UsersModel.findByIdAndUpdate(
         { _id: id },
         {
-          address: `${payload.address}, ${payload.pincode}, ${payload.district}`,
+          address: payload.gotram,
+        }
+      );
+    }
+    if (!userid[0].gothram && payload.gotram) {
+      await UsersModel.findByIdAndUpdate(
+        { _id: id },
+        {
+          gothram: payload.gotram,
         }
       );
     }
