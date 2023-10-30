@@ -17,7 +17,7 @@ const cors = require("cors");
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://dattu.org",
+    origin: "*",
   })
 );
 app.use(bodyParser.json());
