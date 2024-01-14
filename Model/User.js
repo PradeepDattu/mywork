@@ -1,5 +1,12 @@
 const mongoose = require("mongoose");
 
+const familyMemberSchema = mongoose.Schema({
+  Name: { type: String, required: true },
+  Relation: { type: String, required: true },
+  Nakshatram: { type: String, default: null },
+});
+
+
 const usersSchema = mongoose.Schema({
   fname: { type: String, required: true },
   lname: { type: String, default: null },
@@ -15,6 +22,7 @@ const usersSchema = mongoose.Schema({
   TOB: { type: String, default: null },
   POB: { type: String, default: null },
   image: { type: String, default: null },
+  family: [familyMemberSchema],
 });
 
 const UsersModel = mongoose.model("users", usersSchema);

@@ -87,7 +87,116 @@ UsersRoute.post("/",async(req,res)=>{
     catch{
      res.send("Update Error")
     }
-})
+});
+
+
+UsersRoute.post("/:id/family", async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const user = await UsersModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const newFamilyMember = req.body; // Assuming you send the new family member data in the request body
+    user.family.push(newFamilyMember);
+    await user.save();
+
+    res.status(201).json(newFamilyMember);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Get all family members for a specific user
+UsersRoute.get("/:id/family", async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const user = await UsersModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user.family);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Update a family member for a specific user (partial update)
+UsersRoute.patch("/:userId/family/:familyMemberId", async (req, res) => {
+  const userId = req.params.userId;
+  const familyMemberId = req.params.familyMemberId;
+
+  try {
+    const user = await UsersModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const familyMemberIndex = user.family.findIndex(
+      (member) => member._id.toString() === familyMemberId
+    );
+
+    if (familyMemberIndex === -1) {
+      return res.status(404).json({ message: "Family member not found" });
+    }
+
+    // Partial update: only update the fields provided in the request body
+    const updatedFields = req.body; // Assuming you send the updated fields in the request body
+
+    // Loop through the updated fields and update the corresponding family member fields
+    for (const key in updatedFields) {
+      if (Object.hasOwnProperty.call(updatedFields, key)) {
+        user.family[familyMemberIndex][key] = updatedFields[key];
+      }
+    }
+
+    await user.save();
+
+    res.status(200).json(user.family[familyMemberIndex]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Delete a family member for a specific user
+UsersRoute.delete("/:userId/family/:familyMemberId", async (req, res) => {
+  const userId = req.params.userId;
+  const familyMemberId = req.params.familyMemberId;
+
+  try {
+    const user = await UsersModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const familyMemberIndex = user.family.findIndex(
+      (member) => member._id.toString() === familyMemberId
+    );
+
+    if (familyMemberIndex === -1) {
+      return res.status(404).json({ message: "Family member not found" });
+    }
+
+    user.family.splice(familyMemberIndex, 1);
+    await user.save();
+
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 module.exports={
     UsersRoute
