@@ -2,6 +2,7 @@ const express = require("express");
 const { AppointmentModel } = require("../Model/Appoiment");
 const Appointment = express.Router();
 const { UsersModel } = require("../Model/User");
+const {Whatsmsg} = require("./Whatsmsg");
 Appointment.get("/", async (req, res) => {
   try {
     const { query } = req.query;
@@ -75,8 +76,9 @@ Appointment.get("/:id", async (req, res) => {
 });
 Appointment.post("/", async (req, res) => {
   const payload = req.body;
+  // console.log(payload);
   let check = await UsersModel.find({ phone: payload.phone });
-  console.log(check);
+  // console.log(check);
   const currentDate = new Date();
 
   const day = currentDate.getDate();
@@ -96,7 +98,7 @@ Appointment.post("/", async (req, res) => {
         email: payload.email ? payload.email : "",
       });
       await user.save();
-      console.log("user save");
+      // console.log("user save");
     }
     const userid = await UsersModel.find({ phone: payload.phone });
     const id = userid[0]._id;
@@ -107,61 +109,77 @@ Appointment.post("/", async (req, res) => {
     });
     await data.save();
 
+    // console.log(payload.appointmentDate);
+    if(payload.appointmentDate!="Any Time"&&payload.appointmentDate!=undefined){
+      // console.log("Appointment");
+      Whatsmsg('appointment_form',payload.phone,payload.fname+" "+(payload.lname ? payload.lname : ""),payload.appointmentDate,'');
+    
+    }else{
+      // console.log("Contact");
+      Whatsmsg('contact_form',payload.phone,payload.fname+" "+(payload.lname ? payload.lname : ""),'','');
+    
+    }
+    
+    
+
     //telegram bot notifications
 
-    const handleSendNotification = () => {
-      const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
-      const messageBody = `New Appointment Details:
+    // const handleSendNotification = () => {
+    //   const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
+    //   const messageBody = `New Appointment Details:
 
-      Name: ${payload.fname} ${payload.lname}
-      Phone: ${payload.phone}
-      Email: ${payload.email}
+    //   Name: ${payload.fname} ${payload.lname}
+    //   Phone: ${payload.phone}
+    //   Email: ${payload.email}
 
-      Appointment Date: ${payload.appointmentDate}
-      Appointment Time: ${payload.appointmentTime}
+    //   Appointment Date: ${payload.appointmentDate}
+    //   Appointment Time: ${payload.appointmentTime}
 
-      City: ${payload.city}
+    //   City: ${payload.city}
 
-      Message: ${payload.message}
+    //   Message: ${payload.message}
 
-      Submitted on ${formattedDate}`;
+    //   Submitted on ${formattedDate}`;
 
-      const paylord = {
-        chat_id: -1001698776848,
-        text: messageBody,
-      };
+      // const paylord = {
+      //   chat_id: -1001698776848,
+      //   text: messageBody,
+      // };
 
-      const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+    //   const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
 
-      fetch(telegramApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "cache-control": "no-cache",
-        },
-        body: JSON.stringify(paylord),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.ok) {
-            console.log("Message sent successfully!");
-          } else {
-            console.log("An error occurred!");
-          }
-        })
-        .catch((error) => {
-          console.log("Error occurred while sending the message!");
-          console.log(error);
-        });
-    };
+    //   fetch(telegramApiUrl, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "cache-control": "no-cache",
+    //     },
+    //     body: JSON.stringify(paylord),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       if (data.ok) {
+    //         console.log("Message sent successfully!");
+    //       } else {
+    //         console.log("An error occurred!");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log("Error occurred while sending the message!");
+    //       console.log(error);
+    //     });
+    // };
 
     res.send(data);
-    handleSendNotification();
+
+    // handleSendNotification();
   } catch (err) {
     res.send("Post ERRoR");
-    console.log(err);
+    // console.log(err);
   }
 });
+
+
 
 Appointment.delete("/:id", async (req, res) => {
   const id = req.params.id;
@@ -190,7 +208,7 @@ Appointment.patch("/:id", async (req, res) => {
       const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
       const massege =
         payload.authorMessage + " " + "Updated Date" + ": " + formattedDate;
-      console.log(massege);
+      // console.log(massege);
       await AppointmentModel.findByIdAndUpdate(
         { _id: id },
         { ...payload, authorMessage: massege }

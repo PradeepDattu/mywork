@@ -2,6 +2,7 @@ const express = require("express");
 const { HoroModel } = require("../Model/Horoscope");
 const Horo = express.Router();
 const { UsersModel } = require("../Model/User");
+const {Whatsmsg} = require("./Whatsmsg");
 Horo.get("/", async (req, res) => {
   try {
     const { query } = req.query;
@@ -89,7 +90,7 @@ Horo.post("/", async (req, res) => {
         address: payload.address,
       });
       await user.save();
-      console.log("user save");
+      // console.log("user save");
     }
 
     const userid = await UsersModel.find({ phone: payload.phone });
@@ -130,61 +131,55 @@ Horo.post("/", async (req, res) => {
       });
       await data.save();
     }
+    Whatsmsg('astro_form',payload.phone,payload.fname+" "+(payload.lname ? payload.lname : ""),'','');
 
     //telegram bot notifications
 
-    const handleSendNotification = () => {
-      const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
-      const messageBody = `New Astro Enquiry Details:
+    // const handleSendNotification = () => {
+    //   const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
+    //   const messageBody = `New Astro Enquiry Details:
 
-    Name: ${payload.fname} ${payload.lname}
-    Phone: ${payload.phone}
-    Email: ${payload.email}
+    // Name: ${payload.fname} ${payload.lname}
+    // Phone: ${payload.phone}
+    // Email: ${payload.email}
 
-    Astro Date: ${formattedDate}
-    Date Of Birth: ${payload.DOB}
-    Time Of Birth: ${payload.TOB}
-    Place OF Birth: ${payload.POB}
-    Nakshatra: ${payload.nakshatra}
+    // Astro Date: ${formattedDate}
+    // Date Of Birth: ${payload.DOB}
+    // Time Of Birth: ${payload.TOB}
+    // Place OF Birth: ${payload.POB}
+    // Nakshatra: ${payload.nakshatra}
 
-    City: ${payload.city}
-    Full Address: ${payload.address}
+    // City: ${payload.city}
+    // Full Address: ${payload.address}
 
-    Message: ${payload.message}
+    // Message: ${payload.message}
 
-    Submitted on ${formattedDate}`;
+    // Submitted on ${formattedDate}`;
 
-      const paylord = {
-        chat_id: -1001698776848,
-        text: messageBody,
-      };
+    //   const paylord = {
+    //     chat_id: -1001698776848,
+    //     text: messageBody,
+    //   };
 
-      const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
+    //   const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
 
-      fetch(telegramApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "cache-control": "no-cache",
-        },
-        body: JSON.stringify(paylord),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.ok) {
-            console.log("Message sent successfully!");
-          } else {
-            console.log("An error occurred!");
-          }
-        })
-        .catch((error) => {
-          console.log("Error occurred while sending the message!");
-          console.log(error);
-        });
-    };
+    //   fetch(telegramApiUrl, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "cache-control": "no-cache",
+    //     },
+    //     body: JSON.stringify(paylord),
+    //   })
+    //     .then((response) => response.json())
+    //     .catch((error) => {
+    //       // console.log("Error occurred while sending the message!");
+    //       console.log(error);
+    //     });
+    // };
 
     res.send("post");
-    handleSendNotification();
+    // handleSendNotification();
 
     // res.send("Post");
   } catch (err) {
@@ -256,7 +251,7 @@ Horo.patch("/:id", async (req, res) => {
       const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
       const massege =
         payload.authorMessage + " " + "Updated Date" + ": " + formattedDate;
-      console.log(massege);
+      // console.log(massege);
       await HoroModel.findByIdAndUpdate(
         { _id: id },
         { ...payload, authorMessage: massege }
@@ -273,12 +268,12 @@ Horo.patch("/:id", async (req, res) => {
     let { remainAmmount } = user[0];
 
     if (payment == paymentnew) {
-      console.log(amount, amountnew);
+      // console.log(amount, amountnew);
       if (amount != amountnew) {
         if (paymentnew) {
           paidAmmount += amountnew - amount;
         } else {
-          console.log("running");
+          // console.log("running");
           remainAmmount += amountnew - amount;
         }
       }
@@ -287,13 +282,13 @@ Horo.patch("/:id", async (req, res) => {
         paidAmmount -= amount;
         remainAmmount += amountnew;
       } else {
-        console.log("5th");
+        // console.log("5th");
         paidAmmount += amountnew;
         remainAmmount -= amount;
       }
     }
     const usersdata = await UsersModel.find({ _id: data[0].userId });
-    console.log(paidAmmount, remainAmmount, usersdata);
+    // console.log(paidAmmount, remainAmmount, usersdata);
 
     await UsersModel.findByIdAndUpdate(
       { _id: data[0].userId },

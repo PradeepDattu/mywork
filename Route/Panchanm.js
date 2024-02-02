@@ -61,7 +61,7 @@ async function fetchAndStoreData(formattedDate, res) {
     const currentDate = new Date();
     const formattedDateTime = currentDate.toISOString();
 
-    console.log(formattedDateTime);
+    // console.log(formattedDateTime);
     const { access_token } = await getAccessToken();
 
     const response = await axios.get(

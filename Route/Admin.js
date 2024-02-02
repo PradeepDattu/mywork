@@ -14,7 +14,7 @@ AdminRoute.post("/login",async(req,res)=>{
     const payload=req.body
     try{
         const AdminDetails=await AdminModel.find({email:payload.email,password:payload.password})
-        console.log(AdminDetails)
+        // console.log(AdminDetails)
          if(AdminDetails.length>0){
             res.send(AdminDetails[0]._id)
          }else{
