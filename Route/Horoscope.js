@@ -90,7 +90,6 @@ Horo.post("/", async (req, res) => {
         address: payload.address,
       });
       await user.save();
-      // console.log("user save");
     }
 
     const userid = await UsersModel.find({ phone: payload.phone });
@@ -130,60 +129,16 @@ Horo.post("/", async (req, res) => {
         horoDate: formattedDate,
       });
       await data.save();
-    }
-    Whatsmsg('astro_form',payload.phone,payload.fname+" "+(payload.lname ? payload.lname : ""),'','');
+      
+    };
 
-    //telegram bot notifications
-
-    // const handleSendNotification = () => {
-    //   const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
-    //   const messageBody = `New Astro Enquiry Details:
-
-    // Name: ${payload.fname} ${payload.lname}
-    // Phone: ${payload.phone}
-    // Email: ${payload.email}
-
-    // Astro Date: ${formattedDate}
-    // Date Of Birth: ${payload.DOB}
-    // Time Of Birth: ${payload.TOB}
-    // Place OF Birth: ${payload.POB}
-    // Nakshatra: ${payload.nakshatra}
-
-    // City: ${payload.city}
-    // Full Address: ${payload.address}
-
-    // Message: ${payload.message}
-
-    // Submitted on ${formattedDate}`;
-
-    //   const paylord = {
-    //     chat_id: -1001698776848,
-    //     text: messageBody,
-    //   };
-
-    //   const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
-
-    //   fetch(telegramApiUrl, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "cache-control": "no-cache",
-    //     },
-    //     body: JSON.stringify(paylord),
-    //   })
-    //     .then((response) => response.json())
-    //     .catch((error) => {
-    //       // console.log("Error occurred while sending the message!");
-    //       console.log(error);
-    //     });
-    // };
-
-    res.send("post");
-    // handleSendNotification();
-
-    // res.send("Post");
-  } catch (err) {
-    res.send("Post ERRoR");
+    console.log("astro whatsapp before line");
+    Whatsmsg('astro_form',payload.phone,payload.fname+''+(payload.lname ? payload.lname : ''),'','');
+    console.log("astro whatsapp after line");
+    res.send(data);
+    console.log(data);
+    } catch (err) {
+    res.send(err);
     console.log(err);
   }
 });
@@ -222,15 +177,7 @@ Horo.delete("/:id", async (req, res) => {
 });
 
 Horo.patch("/:id", async (req, res) => {
-  // const id = req.params.id;
-  // const payload = req.body;
-  // try {
-  //   await HoroModel.findByIdAndUpdate({ _id: id }, payload);
-  //   res.send("Update Success");
-  // } catch {
-  //   res.send("Update Error");
-  // }
-
+ 
   const id = req.params.id;
   const payload = req.body;
 
@@ -251,7 +198,6 @@ Horo.patch("/:id", async (req, res) => {
       const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
       const massege =
         payload.authorMessage + " " + "Updated Date" + ": " + formattedDate;
-      // console.log(massege);
       await HoroModel.findByIdAndUpdate(
         { _id: id },
         { ...payload, authorMessage: massege }
@@ -268,12 +214,10 @@ Horo.patch("/:id", async (req, res) => {
     let { remainAmmount } = user[0];
 
     if (payment == paymentnew) {
-      // console.log(amount, amountnew);
       if (amount != amountnew) {
         if (paymentnew) {
           paidAmmount += amountnew - amount;
         } else {
-          // console.log("running");
           remainAmmount += amountnew - amount;
         }
       }
@@ -282,13 +226,10 @@ Horo.patch("/:id", async (req, res) => {
         paidAmmount -= amount;
         remainAmmount += amountnew;
       } else {
-        // console.log("5th");
         paidAmmount += amountnew;
         remainAmmount -= amount;
       }
     }
-    const usersdata = await UsersModel.find({ _id: data[0].userId });
-    // console.log(paidAmmount, remainAmmount, usersdata);
 
     await UsersModel.findByIdAndUpdate(
       { _id: data[0].userId },

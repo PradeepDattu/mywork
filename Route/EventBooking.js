@@ -42,7 +42,6 @@ Event.get("/", async (req, res) => {
     res.send(sortedData);
   } catch (err) {
     res.send("Error");
-    // console.log(err);
   }
 });
 
@@ -117,7 +116,6 @@ Event.post("/", async (req, res) => {
         gothram: payload.gotram ? payload.gotram : "",
       });
       await user.save();
-      // console.log("user save");
     }
 
     const userid = await UsersModel.find({ phone: payload.phone });
@@ -146,77 +144,16 @@ Event.post("/", async (req, res) => {
     });
     await data.save();
 
+    console.log("event whatsapp before line");
     Whatsmsg('event_form',payload.phone,payload.fname+" "+(payload.lname ? payload.lname : ""),payload.eventDate,payload.eventName);
-
-    // telegram bot notifications
-
-    // const handleSendNotification = () => {
-    //   const telegram_bot_id = "5999513750:AAFth2FcbbXQc2aQp7k3s8NZnYBwcjaHNMQ";
-    //   const telegram_bot_id2 = "6558514800:AAHRkRYVnn4s9Sr0XhGDOMEUWJaDazeV15k";
-    //   const messageBody = `New Event Details:
-
-    //   Name: ${payload.fname} ${payload.lname}
-    //   Phone: ${payload.phone}
-    //   Email: ${payload.email}
-
-    //   Event Name: ${payload.eventName}
-    //   Event Date: ${payload.eventDate}
-    //   Event Time: ${payload.eventTime}
-
-    //   City: ${payload.city}
-    //   Full Address: ${payload.address} ${payload.district} ${payload.pincode}
-
-    //   Message: ${payload.message}
-
-    //   Submitted on ${formattedDate}`;
-
-      // const paylord = {
-      //   chat_id: -1001698776848,
-      //   text: messageBody,
-      // };
-      // const paylord2 = {
-      //   chat_id: -1001980872134,
-      //   text: messageBody,
-      // };
-
-      // const telegramApiUrl = `https://api.telegram.org/bot${telegram_bot_id}/sendMessage`;
-      // const telegramApiUrl2 = `https://api.telegram.org/bot${telegram_bot_id2}/sendMessage`;
-
-      // fetch(telegramApiUrl, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "cache-control": "no-cache",
-      //   },
-      //   body: JSON.stringify(paylord),
-      // })
-      //   .then((response) => response.json())
-      //   .catch((error) => {
-      //     // console.log("Error occurred while sending the message!");
-      //     // console.log(error);
-      //   });
-
-    //   fetch(telegramApiUrl2, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "cache-control": "no-cache",
-    //     },
-    //     body: JSON.stringify(paylord2),
-    //   })
-    //     .then((response) => response.json())
-    //     .catch((error) => {
-    //       // console.log("Error occurred while sending the message!");
-    //       console.log(error);
-    //     });
-    // };
+    console.log("event whatsapp after line");
 
     res.send(data);
-    // handleSendNotification();
-
-    // res.send(data);
-  } catch {
-    res.send("err");
+    console.log(data);
+  
+  } catch(err) {
+    res.send(err);
+    console.log(err);
   }
 });
 Event.delete("/:id", async (req, res) => {
@@ -263,7 +200,6 @@ Event.delete("/:id", async (req, res) => {
 Event.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const payload = req.body;
-  // console.log(payload);
   try {
     const data = await EventModel.find({ _id: id });
     const payment = data[0].paymentStatus;
@@ -282,7 +218,7 @@ Event.patch("/:id", async (req, res) => {
       const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
       const massege =
         payload.authorMessage + " " + "Updated Date" + ": " + formattedDate;
-      // console.log(massege);
+    
       await EventModel.findByIdAndUpdate(
         { _id: id },
         { ...payload, authorMessage: massege }
@@ -301,12 +237,12 @@ Event.patch("/:id", async (req, res) => {
     let { expense } = user[0];
 
     if (payment == paymentnew) {
-      // console.log(amount, amountnew);
+      
       if (amount != amountnew) {
         if (paymentnew) {
           paidAmmount += amountnew - amount;
         } else {
-          // console.log("running");
+          
           remainAmmount += amountnew - amount;
         }
       }
@@ -315,14 +251,12 @@ Event.patch("/:id", async (req, res) => {
         paidAmmount -= amount;
         remainAmmount += amountnew;
       } else {
-        // console.log("5th");
+        
         paidAmmount += amountnew;
         remainAmmount -= amount;
       }
     }
     expense = expense + expensenew - expenses;
-    const usersdata = await UsersModel.find({ _id: data[0].userId });
-    // console.log(paidAmmount, remainAmmount, usersdata);
 
     await UsersModel.findByIdAndUpdate(
       { _id: data[0].userId },

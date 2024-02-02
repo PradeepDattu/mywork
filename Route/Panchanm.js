@@ -2,31 +2,6 @@ const axios = require("axios");
 const express = require("express");
 const { PanchamModel } = require("../Model/Pancham");
 const pancham = express.Router();
-// pancham.post("/", async (req, res) => {
-
-//   const currentDate = new Date();
-//   const day = currentDate.getDate();
-//   const month = currentDate.getMonth() + 1;
-//   const year = currentDate.getFullYear();
-//   const formattedDate = `${day}/${month}/${year}`;
-
-//   try {
-//     const data = await PanchamModel.find();
-//     const { date } = data[0];
-//     if (date == formattedDate) {
-//       res.send("Data already present");
-//     } else {
-//       if (date) {
-//         await PanchamModel.deleteOne({ _id: data[0]._id });
-//       }
-//       fetchAndStoreData(formattedDate);
-
-//       res.send("post");
-//     }
-//   } catch {
-//     res.send("error");
-//   }
-// });
 pancham.get("/", async (req, res) => {
   const currentDate = new Date();
   const day = currentDate.getDate();
@@ -44,8 +19,7 @@ pancham.get("/", async (req, res) => {
         await PanchamModel.deleteOne({ _id: data[0]._id });
       }
       fetchAndStoreData(formattedDate, res);
-      // const Data = await PanchamModel.find();
-      // res.send(Data);
+      
     }
   } catch (error) {
     res.send("Errr");
@@ -61,7 +35,7 @@ async function fetchAndStoreData(formattedDate, res) {
     const currentDate = new Date();
     const formattedDateTime = currentDate.toISOString();
 
-    // console.log(formattedDateTime);
+    
     const { access_token } = await getAccessToken();
 
     const response = await axios.get(
