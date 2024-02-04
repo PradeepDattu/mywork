@@ -2,7 +2,7 @@ const express = require("express");
 const { HoroModel } = require("../Model/Horoscope");
 const Horo = express.Router();
 const { UsersModel } = require("../Model/User");
-const {Whatsmsg} = require("./Whatsmsg");
+
 Horo.get("/", async (req, res) => {
   try {
     const { query } = req.query;
@@ -40,8 +40,8 @@ Horo.get("/", async (req, res) => {
 
     res.send(sortedData);
   } catch (error) {
-    console.error(error);
-    res.send("Error");
+    
+    res.send(error);
   }
 });
 
@@ -59,8 +59,8 @@ Horo.get("/:id", async (req, res) => {
       return dateB - dateA;
     });
     res.send(sortedData);
-  } catch {
-    res.send("Error");
+  } catch(err) {
+    res.send(err);
   }
 });
 Horo.post("/", async (req, res) => {
@@ -132,14 +132,13 @@ Horo.post("/", async (req, res) => {
       
     };
 
-    console.log("astro whatsapp before line");
-    Whatsmsg('astro_form',payload.phone,payload.fname+''+(payload.lname ? payload.lname : ''),'','');
-    console.log("astro whatsapp after line");
+    Whatsmsg('astro_form',payload.phone,payload.fname+' '+(payload.lname ? payload.lname : ''),'','');
+    
     res.send(data);
-    console.log(data);
+    
     } catch (err) {
     res.send(err);
-    console.log(err);
+    
   }
 });
 
@@ -169,10 +168,9 @@ Horo.delete("/:id", async (req, res) => {
       );
     }
     await HoroModel.findByIdAndDelete({ _id: id });
-    res.send("Delete Success");
+    res.send("Astro Deleted Sucessfully");
   } catch (err) {
-    console.log(err);
-    res.send("Delete Error");
+    res.send(err);
   }
 });
 
@@ -236,10 +234,9 @@ Horo.patch("/:id", async (req, res) => {
 
       { paidAmmount, remainAmmount }
     );
-    res.send("Updated successfully");
+    res.send("Astro Updated Successfully");
   } catch (err) {
-    console.log(err);
-    res.send("Update Error");
+    res.send(err);
   }
 });
 

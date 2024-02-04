@@ -41,7 +41,7 @@ Event.get("/", async (req, res) => {
 
     res.send(sortedData);
   } catch (err) {
-    res.send("Error");
+    res.send(err);
   }
 });
 
@@ -88,8 +88,8 @@ Event.get("/users/:id", async (req, res) => {
       return dateA - dateB;
     });
     res.send(sortedData);
-  } catch {
-    res.send("Error");
+  } catch(err) {
+    res.send(err);
   }
 });
 Event.post("/", async (req, res) => {
@@ -144,16 +144,12 @@ Event.post("/", async (req, res) => {
     });
     await data.save();
 
-    console.log("event whatsapp before line");
-    Whatsmsg('event_form',payload.phone,payload.fname+" "+(payload.lname ? payload.lname : ""),payload.eventDate,payload.eventName);
-    console.log("event whatsapp after line");
+    Whatsmsg('event_form',payload.phone,payload.fname+' '+(payload.lname ? payload.lname : ''),''+payload.eventDate,payload.eventName);
 
     res.send(data);
-    console.log(data);
   
   } catch(err) {
     res.send(err);
-    console.log(err);
   }
 });
 Event.delete("/:id", async (req, res) => {
@@ -190,10 +186,10 @@ Event.delete("/:id", async (req, res) => {
       { expense }
     );
     await EventModel.findByIdAndDelete({ _id: id });
-    res.send("Delete Success");
+    res.send("Event Deleted Sucessfully");
   } catch (err) {
-    console.log(err);
-    res.send("Delete Error");
+  
+    res.send(err);
   }
 });
 
@@ -263,10 +259,10 @@ Event.patch("/:id", async (req, res) => {
 
       { paidAmmount, remainAmmount, expense }
     );
-    res.send("Updated successfully");
+    res.send("Event Updated successfully");
   } catch (err) {
-    console.log(err);
-    res.send("Update Error");
+
+    res.send(err);
   }
 });
 module.exports = {

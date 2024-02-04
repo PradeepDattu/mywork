@@ -51,8 +51,7 @@ Appointment.get("/", async (req, res) => {
 
     res.send(sortedData);
   } catch (error) {
-    console.error(error);
-    res.send("Error");
+    res.send(error);
   }
 });
 
@@ -70,8 +69,8 @@ Appointment.get("/:id", async (req, res) => {
       return dateA - dateB;
     });
     res.send(sortedData);
-  } catch {
-    res.send("Error");
+  } catch (err){
+    res.send(err);
   }
 });
 Appointment.post("/", async (req, res) => {
@@ -104,29 +103,17 @@ Appointment.post("/", async (req, res) => {
       userId: id,
       bookingDate: formattedDate,
     });
-    await data.save();
-
+    await data.save();  
+    
     if(payload.appointmentDate!="Any Time" && payload.appointmentDate!=undefined){
-      console.log("A line before appointment form function msg");
-      Whatsmsg('appointment_form',payload.phone,payload.fname+" "+(payload.lname ? payload.lname : ""),""+payload.appointmentDate,'');
-      console.log("A line after appointment form function msg")
+      Whatsmsg('appointment_form',payload.phone,payload.fname+' '+(payload.lname ? payload.lname : ''),''+payload.appointmentDate,'');
     }else{
-      console.log("A line before contact form function msg");
-      Whatsmsg('contact_form',payload.phone,payload.fname+" "+(payload.lname ? payload.lname : ""),'','');
-      console.log("A line after contact form function msg");
-    };
-    
-    
-
-    
+      Whatsmsg('contact_form',payload.phone,payload.fname+' '+(payload.lname ? payload.lname : ''),'','');
+    };    
     res.send(data);
-    console.log(data);
-
     
   } catch (err) {
-    res.send(err);
-    console.log(err);
-    
+    res.send(err);    
   }
 });
 
@@ -136,9 +123,9 @@ Appointment.delete("/:id", async (req, res) => {
   const id = req.params.id;
   try {
     await AppointmentModel.findByIdAndDelete({ _id: id });
-    res.send("Delete Success");
-  } catch {
-    res.send("Delete Error");
+    res.send("Appointment Deleted Successfully");
+  } catch (err){
+    res.send(err);
   }
 });
 
@@ -163,13 +150,13 @@ Appointment.patch("/:id", async (req, res) => {
         { _id: id },
         { ...payload, authorMessage: massege }
       );
-      res.send("Update Success");
+      res.send("Appointment Updated Successfully");
     } else {
       await AppointmentModel.findByIdAndUpdate({ _id: id }, payload);
-      res.send("Update Success");
+      res.send("Appointment Updated Successfully");
     }
-  } catch {
-    res.send("Update Error");
+  } catch(err) {
+    res.send(err);
   }
 });
 
