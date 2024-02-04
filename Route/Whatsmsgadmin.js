@@ -16,7 +16,7 @@ if(mobile.length!=10){return};
                       "parameters": [
                           {
                               "type": "text",
-                              "text": payload.fname+' '+payload.lname?payload.lname:' - '
+                              "text": payload.fname+' '+payload.lname?payload.lname:' '
                           },
                           {
                             "type": "text",
@@ -28,11 +28,11 @@ if(mobile.length!=10){return};
                         },
                         {
                             "type": "text",
-                            "text": payload.appointmentDate?payload.appointmentDate:' - '
+                            "text": payload.appointmentDate?payload.appointmentDate:'Any Date'
                         },
                         {
                             "type": "text",
-                            "text": payload.appointmentTime?payload.appointmentTime:' - '
+                            "text": payload.appointmentTime?payload.appointmentTime:'Any Time'
                         },
                         {
                             "type": "text",
@@ -40,7 +40,7 @@ if(mobile.length!=10){return};
                         },
                         {
                             "type": "text",
-                            "text": payload.message?payload.message:' - '
+                            "text": payload.message?payload.message.replace(/[\s\t\n]+/g, '_'):' - '
                         }
                       ]
                   };break;
@@ -49,7 +49,7 @@ if(mobile.length!=10){return};
             "parameters": [
                 {
                     "type": "text",
-                    "text": payload.fname+' '+payload.lname?payload.lname:' - '
+                    "text": payload.fname+' '+payload.lname?payload.lname:' '
                 },
                 {
                   "type": "text",
@@ -81,11 +81,11 @@ if(mobile.length!=10){return};
             },
             {
                 "type": "text",
-                "text": payload.address?payload.address:' - '
+                "text": payload.address?payload.address.replace(/[\s\t\n]+/g, '_'):' - '
             },
             {
                 "type": "text",
-                "text": payload.message?payload.message:' - '
+                "text": payload.message?payload.message.replace(/[\s\t\n]+/g, '_'):' - '
             }
             ]
         };break;
@@ -94,7 +94,7 @@ if(mobile.length!=10){return};
                 "parameters": [
                     {
                         "type": "text",
-                        "text": payload.fname+' '+payload.lname?payload.lname:' - '
+                        "text": payload.fname+' '+payload.lname?payload.lname:' '
                     },
                     {
                       "type": "text",
@@ -122,11 +122,11 @@ if(mobile.length!=10){return};
                   },
                   {
                     "type": "text",
-                    "text": payload.address?payload.address:' - '
+                    "text": payload.address?payload.address.replace(/[\s\t\n]+/g, '_'):' - '
                 },
                 {
                     "type": "text",
-                    "text": payload.message?payload.message:' - '
+                    "text": payload.message?payload.message.replace(/[\s\t\n]+/g, '_'):' - '
                 }
             ]
         };break;          
