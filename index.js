@@ -13,7 +13,7 @@ const { pancham } = require("./Route/Panchanm");
 const { Horo } = require("./Route/Horoscope");
 const { RevenueRoute } = require("./Route/Revenue");
 const { YoutubeRoute } = require("./Route/Youtube");
-const {WhatsRoute}=require("./Route/whats");
+const {whats}=require("./Route/whats");
 
 const cors = require("cors");
 app.use(express.json());
@@ -34,7 +34,7 @@ app.use("/horo", Horo);
 app.use("/gallery", GalleryRoute);
 app.use("/revenue", RevenueRoute);
 app.use("/youtube", YoutubeRoute);
-app.use("/whats",WhatsRoute)
+app.use("/whats",whats);
 
 
 
