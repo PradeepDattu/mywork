@@ -16,7 +16,7 @@ if(mobile.length!=10){return};
                       "parameters": [
                           {
                               "type": "text",
-                              "text": payload.fname+' '+payload.lname
+                              "text": payload.fname+' '+payload.lname?payload.lname:' - '
                           },
                           {
                             "type": "text",
@@ -24,23 +24,23 @@ if(mobile.length!=10){return};
                         },
                         {
                             "type": "text",
-                            "text": payload.email
+                            "text": payload.email?payload.email:' - '
                         },
                         {
                             "type": "text",
-                            "text": payload.appointmentDate
+                            "text": payload.appointmentDate?payload.appointmentDate:' - '
                         },
                         {
                             "type": "text",
-                            "text": payload.appointmentTime
+                            "text": payload.appointmentTime?payload.appointmentTime:' - '
                         },
                         {
                             "type": "text",
-                            "text": payload.city
+                            "text": payload.city?payload.city:' - '
                         },
                         {
                             "type": "text",
-                            "text": payload.message
+                            "text": payload.message?payload.message:' - '
                         }
                       ]
                   };break;
@@ -49,7 +49,7 @@ if(mobile.length!=10){return};
             "parameters": [
                 {
                     "type": "text",
-                    "text": payload.fname+' '+payload.lname
+                    "text": payload.fname+' '+payload.lname?payload.lname:' - '
                 },
                 {
                   "type": "text",
@@ -57,45 +57,44 @@ if(mobile.length!=10){return};
               },
               {
                   "type": "text",
-                  "text": payload.email
+                  "text": payload.email?payload.email:' - '
               },
               {
                   "type": "text",
-                  "text": payload.DOB
+                  "text": payload.DOB?payload.DOB:' - '
               },
               {
                   "type": "text",
-                  "text": payload.TOB
+                  "text": payload.TOB?payload.TOB:' - '
               },
               {
                   "type": "text",
-                  "text": payload.nakshatra
+                  "text": payload.nakshatra?payload.nakshatra:' - '
               },
               {
                   "type": "text",
-                  "text": payload.POB
+                  "text": payload.POB?payload.POB:' - '
               },
               {
                 "type": "text",
-                "text": payload.city
+                "text": payload.city?payload.city:' - '
             },
             {
                 "type": "text",
-                "text": payload.address
+                "text": payload.address?payload.address:' - '
             },
             {
                 "type": "text",
-                "text": payload.message
+                "text": payload.message?payload.message:' - '
             }
             ]
         };break;
-        case "event_form":var extraString={
-            
+        case "event_form_admin":var extraString={            
                 "type": "body",
                 "parameters": [
                     {
                         "type": "text",
-                        "text": payload.fname+' '+payload.lname
+                        "text": payload.fname+' '+payload.lname?payload.lname:' - '
                     },
                     {
                       "type": "text",
@@ -103,36 +102,33 @@ if(mobile.length!=10){return};
                   },
                   {
                       "type": "text",
-                      "text": payload.email
+                      "text": payload.email?payload.email:' - '
                   },
                   {
                       "type": "text",
-                      "text": payload.eventName
+                      "text": payload.eventName?payload.eventName:' - '
                   },
                   {
                       "type": "text",
-                      "text": payload.eventDate
+                      "text": payload.eventDate?payload.eventDate:' - '
                   },
                   {
                       "type": "text",
-                      "text": payload.eventTime
+                      "text": payload.eventTime?payload.eventTime:' - '
                   },
                   {
                       "type": "text",
-                      "text": payload.city
+                      "text": payload.city?payload.city:' - '
                   },
                   {
                     "type": "text",
-                    "text": payload.address
+                    "text": payload.address?payload.address:' - '
                 },
                 {
                     "type": "text",
-                    "text": payload.message
+                    "text": payload.message?payload.message:' - '
                 }
-                
-                ]
-            
-
+            ]
         };break;          
     }
     var raw = JSON.stringify({
