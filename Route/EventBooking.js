@@ -144,8 +144,7 @@ Event.post("/", async (req, res) => {
     });
     await data.save();
 
-    Whatsmsg('event_form',payload.phone,payload.fname+' '+(payload.lname ? payload.lname : ''),''+payload.eventDate,payload.eventName);
-
+   
     res.send(data);
   
   } catch(err) {

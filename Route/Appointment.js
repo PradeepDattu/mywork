@@ -105,11 +105,7 @@ Appointment.post("/", async (req, res) => {
     });
     await data.save();  
     
-    if(payload.appointmentDate!="Any Time" && payload.appointmentDate!=undefined){
-      Whatsmsg('appointment_form',payload.phone,payload.fname+' '+(payload.lname ? payload.lname : ''),''+payload.appointmentDate,'');
-    }else{
-      Whatsmsg('contact_form',payload.phone,payload.fname+' '+(payload.lname ? payload.lname : ''),'','');
-    };    
+        
     res.send(data);
     
   } catch (err) {
