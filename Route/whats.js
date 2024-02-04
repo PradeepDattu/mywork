@@ -2,7 +2,8 @@ const express = require("express");
 const whats = express.Router();
 const { Whatsmsg } = require("./Whatsmsg");
 const { Whatsmsgadmin } = require("./Whatsmsgadmin");
-const numberAdmin1 = '8500291085';
+const numberAdmin1 = '9908875186';
+const numberAdmin2 = '7207706106';
 
 async function sendMessages(type, payload, numberAdmin) {
   try {
@@ -36,8 +37,9 @@ async function sendMessages(type, payload, numberAdmin) {
 // Refactored route handlers using a single function to handle message sending
 whats.post("/astro", async (req, res) => {
   try {
-    const result = await sendMessages('astro', req.body, numberAdmin1);
-    res.send(result);
+    const result1 = await sendMessages('astro', req.body, numberAdmin1);
+    const result2 = await sendMessages('astro', req.body, numberAdmin2);
+    res.send("Sent");
   } catch (err) {
     res.status(500).send(err.message);
   }
@@ -45,8 +47,9 @@ whats.post("/astro", async (req, res) => {
 
 whats.post("/appoint", async (req, res) => {
   try {
-    const result = await sendMessages('appoint', req.body, numberAdmin1);
-    res.send(result);
+    const result1 = await sendMessages('appoint', req.body, numberAdmin1);
+    const result2 = await sendMessages('appoint', req.body, numberAdmin2);
+    res.send("Sent");
   } catch (err) {
     res.status(500).send(err.message);
   }
@@ -54,8 +57,9 @@ whats.post("/appoint", async (req, res) => {
 
 whats.post("/contact", async (req, res) => {
   try {
-    const result = await sendMessages('contact', req.body, numberAdmin1);
-    res.send(result);
+    const result1 = await sendMessages('contact', req.body, numberAdmin1);
+    const result2 = await sendMessages('contact', req.body, numberAdmin2);
+    res.send("Sent");
   } catch (err) {
     res.status(500).send(err.message);
   }
@@ -63,8 +67,9 @@ whats.post("/contact", async (req, res) => {
 
 whats.post("/event", async (req, res) => {
   try {
-    const result = await sendMessages('event', req.body, numberAdmin1);
-    res.send(result);
+    const result1 = await sendMessages('event', req.body, numberAdmin1);
+    const result2 = await sendMessages('event', req.body, numberAdmin2);
+    res.send("Sent");
   } catch (err) {
     res.status(500).send(err.message);
   }
