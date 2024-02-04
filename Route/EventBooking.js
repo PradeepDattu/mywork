@@ -2,7 +2,6 @@ const express = require("express");
 const { EventModel } = require("../Model/EventBooking");
 const Event = express.Router();
 const { UsersModel } = require("../Model/User");
-const {Whatsmsg} = require("./Whatsmsg");
 Event.get("/", async (req, res) => {
   try {
     const { query } = req.query;
