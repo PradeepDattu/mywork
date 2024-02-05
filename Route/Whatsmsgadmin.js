@@ -158,9 +158,11 @@ if(mobile.length!=10){return};
       redirect: 'follow'
     };
     fetch("https://api.msg91.com/api/v5/whatsapp/whatsapp-outbound-message/",requestOptions)
-    .then(response => {return response.text()})
-    .catch(error => {return error});
+    .then(response =>console.log(response.text()))
+    .catch(error => console.log(error));
 
+
+    return "message sent";
     
 }
 
