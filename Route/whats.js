@@ -8,31 +8,34 @@ const numberAdmin2 = '7207706106';
 async function sendMessages(type, payload, numberAdmin1,numberAdmin2) {
   try {
     // Depending on the type, send appropriate messages
+    const result1='no result 1';
+    const result2='no result 2';
+    const result3='no result 3';
     switch (type) {
       case 'astro':
-        await Whatsmsg('astro_form', payload.phone, `${payload.fname} ${payload.lname || ''}`, '', '');
-        await Whatsmsgadmin('astro_form_admin', payload, numberAdmin1);
-        await Whatsmsgadmin('astro_form_admin', payload, numberAdmin2);
+        result1=await Whatsmsg('astro_form', payload.phone, `${payload.fname} ${payload.lname || ''}`, '', '');
+        result2=await Whatsmsgadmin('astro_form_admin', payload, numberAdmin1);
+        result3=await Whatsmsgadmin('astro_form_admin', payload, numberAdmin2);
         break;
       case 'appoint':
-        await Whatsmsg('appointment_form', payload.phone, `${payload.fname} ${payload.lname || ''}`, `${payload.appointmentDate}`, '');
-        await Whatsmsgadmin('appointment_form_admin', payload, numberAdmin1);
-        await Whatsmsgadmin('appointment_form_admin', payload, numberAdmin2);
+        result1=await Whatsmsg('appointment_form', payload.phone, `${payload.fname} ${payload.lname || ''}`, `${payload.appointmentDate}`, '');
+        result2=await Whatsmsgadmin('appointment_form_admin', payload, numberAdmin1);
+        result3=await Whatsmsgadmin('appointment_form_admin', payload, numberAdmin2);
         break;
       case 'contact':
-        await Whatsmsg('contact_form', payload.phone, `${payload.fname} ${payload.lname || ''}`, '', '');
-        await Whatsmsgadmin('appointment_form_admin', payload, numberAdmin1);
-        await Whatsmsgadmin('appointment_form_admin', payload, numberAdmin2);
+        result1=await Whatsmsg('contact_form', payload.phone, `${payload.fname} ${payload.lname || ''}`, '', '');
+        result2=await Whatsmsgadmin('appointment_form_admin', payload, numberAdmin1);
+        result3=await Whatsmsgadmin('appointment_form_admin', payload, numberAdmin2);
         break;
       case 'event':
-        await Whatsmsg('event_form', payload.phone, `${payload.fname} ${payload.lname || ''}`, `${payload.eventDate}`, payload.eventName);
-        await Whatsmsgadmin('event_form_admin', payload, numberAdmin1);
-        await Whatsmsgadmin('event_form_admin', payload, numberAdmin2);
+        result1=await Whatsmsg('event_form', payload.phone, `${payload.fname} ${payload.lname || ''}`, `${payload.eventDate}`, payload.eventName);
+        result2=await Whatsmsgadmin('event_form_admin', payload, numberAdmin1);
+        result3=await Whatsmsgadmin('event_form_admin', payload, numberAdmin2);
         break;
       default:
         throw new Error('Invalid message type');
     }
-    return 'sent';
+    return `${result1} and ${result2} and ${result3}`;
   } catch (err) {
     throw err;
   }
