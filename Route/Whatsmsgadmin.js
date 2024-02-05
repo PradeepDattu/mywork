@@ -1,7 +1,7 @@
 
 
 
-function Whatsmsgadmin(formType,payload,mobile){
+async function Whatsmsgadmin(formType,payload,mobile){
     // console.log("cheking");
 if(mobile.length!=10){return};
 // console.log("working");
@@ -151,18 +151,19 @@ if(mobile.length!=10){return};
           "messaging_product": "whatsapp"
       }
     });
+    var resp;
     var requestOptions = {
       method: 'POST',
       headers: myHeaders,
       body: raw,
       redirect: 'follow'
     };
-    fetch("https://api.msg91.com/api/v5/whatsapp/whatsapp-outbound-message/",requestOptions)
-    .then(response =>console.log(response.text()))
-    .catch(error => console.log(error));
+    await fetch("https://api.msg91.com/api/v5/whatsapp/whatsapp-outbound-message/",requestOptions)
+    .then(response =>resp=response.text())
+    .catch(error => resp=error);
 
 
-    return "message sent";
+    return resp;
     
 }
 
