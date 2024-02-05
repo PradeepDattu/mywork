@@ -67,7 +67,6 @@ if(mobile.length!=10){return};
           "messaging_product": "whatsapp"
       }
     });
-    var resp;
     var requestOptions = {
       method: 'POST',
       headers: myHeaders,
@@ -75,10 +74,10 @@ if(mobile.length!=10){return};
       redirect: 'follow'
     };
     fetch("https://api.msg91.com/api/v5/whatsapp/whatsapp-outbound-message/",requestOptions)
-    .then(response => resp=response.text())
-    .catch(error => resp= error);
+    .then(response =>{ return response.text()})
+    .catch(error => {return error});
     
-return resp;
+
     
 }
 
