@@ -8,9 +8,9 @@ const numberAdmin2 = '7207706106';
 async function sendMessages(type, payload, numberAdmin1,numberAdmin2) {
   try {
     // Depending on the type, send appropriate messages
-    const result1='no result 1';
-    const result2='no result 2';
-    const result3='no result 3';
+    let result1='no result 1';
+    let result2='no result 2';
+    let result3='no result 3';
     switch (type) {
       case 'astro':
         result1=await Whatsmsg('astro_form', payload.phone, `${payload.fname} ${payload.lname || ''}`, '', '');
