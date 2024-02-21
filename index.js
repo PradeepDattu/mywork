@@ -14,6 +14,7 @@ const { Horo } = require("./Route/Horoscope");
 const { RevenueRoute } = require("./Route/Revenue");
 const { YoutubeRoute } = require("./Route/Youtube");
 const {whats}=require("./Route/whats");
+const {AssigneeRoute} = require("./Route/EventAssignees");
 
 const cors = require("cors");
 app.use(express.json());
@@ -35,6 +36,7 @@ app.use("/gallery", GalleryRoute);
 app.use("/revenue", RevenueRoute);
 app.use("/youtube", YoutubeRoute);
 app.use("/whats",whats);
+app.use('/assignee', AssigneeRoute);
 
 
 

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const EventAssignees = require("./EventAssignees");
 
 const eventSchema = mongoose.Schema({
   fname: { type: String, required: true },
@@ -31,6 +32,16 @@ const eventSchema = mongoose.Schema({
     },
   ],
 });
+
+eventSchema.add({
+  assignees: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'EventAssignees'
+    }
+  ]
+});
+
 
 const EventModel = mongoose.model("EventBooking", eventSchema);
 
