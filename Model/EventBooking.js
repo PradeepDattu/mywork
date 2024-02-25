@@ -36,8 +36,11 @@ const eventSchema = mongoose.Schema({
 eventSchema.add({
   assignees: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'EventAssignees'
+      
+      name: { type: String, required: true },
+  mobile: { type: String, required: true },
+  status: { type: Boolean, default: true },
+  assigned: { type: Boolean, default: false }
     }
   ]
 });

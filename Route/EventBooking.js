@@ -150,6 +150,20 @@ Event.post("/", async (req, res) => {
     res.send(err);
   }
 });
+
+Event.post('/assignees', async (req, res) => {
+  const { eventId, assignees } = req.body;
+  try {
+    await EventModel.updateOne({ _id: eventId }, { assignees: assignees });
+    res.status(200).send('Assignees updated successfully');
+  } catch (error) {
+    res.status(500).send('Error updating assignees');
+  }
+});
+
+
+
+
 Event.delete("/:id", async (req, res) => {
   const id = req.params.id;
   try {
