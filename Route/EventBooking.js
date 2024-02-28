@@ -152,9 +152,14 @@ Event.post("/", async (req, res) => {
 });
 
 Event.post('/assignees', async (req, res) => {
- try{
-  res.send("message sucess")
- }catch(err){res.send("error")}
+  const { eventId, assignees } = req.body;
+  try {
+    await EventModel.updateOne({ _id: eventId }, { assignees: assignees });
+    res.status(200).send('Assignees updated successfully');
+  } catch (error) {
+    res.status(500).send('Error updating assignees');
+  }
+
 });
 
 
