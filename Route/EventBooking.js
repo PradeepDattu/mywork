@@ -4,6 +4,7 @@ const Event = express.Router();
 const { UsersModel } = require("../Model/User");
 const { Whatsmsgadmin } = require("./Whatsmsgadmin");
 Event.get("/", async (req, res) => {
+  console.log("check search query")
   try {
     const { query } = req.query;
 
@@ -93,6 +94,7 @@ Event.get("/users/:id", async (req, res) => {
   }
 });
 Event.post("/", async (req, res) => {
+  console.log("check normal post")
   const payload = req.body;
   const currentDate = new Date();
 
@@ -153,6 +155,7 @@ Event.post("/", async (req, res) => {
 });
 
 Event.post('/assignees', async (req, res) => {
+  console.log("check assignee post");
   const { eventId, assignees } = req.body;
 
   const prevEvent =await EventModel.find({_id:eventId});
