@@ -2,6 +2,7 @@ const express = require("express");
 const { EventModel } = require("../Model/EventBooking");
 const Event = express.Router();
 const { UsersModel } = require("../Model/User");
+const { Whatsmsgadmin } = require("./Whatsmsgadmin");
 Event.get("/", async (req, res) => {
   try {
     const { query } = req.query;
@@ -153,6 +154,34 @@ Event.post("/", async (req, res) => {
 
 Event.post('/assignees', async (req, res) => {
   const { eventId, assignees } = req.body;
+
+  const prevEvent =await EventModel.find({_id:eventId});
+
+const preAssignees=await prevEvent[0].assignees;
+const UpdatedObject={
+eventName:prevEvent[0].eventName,
+eventDate:prevEvent[0].eventDate,
+eventTime:prevEvent[0].eventTime,
+fname:prevEvent[0].fname,
+lname:prevEvent[0].lname,
+city:prevEvent[0].address+"_"+prevEvent[0].city}
+
+assignees.forEach(async(ass)=>{
+  
+  const assi=preAssignees.filter((asss)=>asss._id==ass._id);
+  if(assi){
+    if(assi[0].assigned!=ass.assigned){
+      await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
+      
+    }
+  }else{
+    await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
+    
+  }
+
+}
+)
+
   try {
     await EventModel.updateOne({ _id: eventId }, { assignees: assignees });
     res.status(200).send('Assignees updated successfully');

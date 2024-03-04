@@ -6,6 +6,12 @@ async function Whatsmsgadmin(formType,payload,mobile){
 if(mobile.length!=10){return};
 // console.log("working");
 
+if(formType==true){
+formType="assign_event";
+}else if(formType==false){
+    formType="deassign_event";
+} 
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("authkey", "414824AYgyh4tgl5ZR65b75ce6P1");
@@ -129,7 +135,62 @@ if(mobile.length!=10){return};
                     "text": payload.message?payload.message.replace(/[\s\t\n]+/g, '_'):' - '
                 }
             ]
-        };break;          
+        };break;  
+        case "assign_event":var extraString={            
+            "type": "body",
+            "parameters": [
+                {
+                    "type": "text",
+                    "text": payload.eventName?payload.eventName:' - '
+                    
+                },
+                {
+                  "type": "text",
+                  "text": payload.eventDate
+              },
+              {
+                  "type": "text",
+                  "text": payload.eventTime?payload.eventTime:' - '
+              },
+              {
+                  "type": "text",
+                  "text": payload.lname?payload.fname+' '+payload.lname:payload.fname
+                  
+              },              
+              {
+                "type": "text",
+                "text": payload.city?payload.city.replace(/[\s\t\n]+/g, '_'):' - '
+            }
+        ]
+    };break;
+    case "deassign_event":var extraString={            
+        "type": "body",
+        "parameters": [
+            {
+                "type": "text",
+                "text": payload.eventName?payload.eventName:' - '
+                
+            },
+            {
+              "type": "text",
+              "text": payload.eventDate
+          },
+          {
+              "type": "text",
+              "text": payload.eventTime?payload.eventTime:' - '
+          },
+          {
+              "type": "text",
+              "text": payload.fname+' '+payload.lname?payload.lname:' '
+              
+          },              
+          {
+            "type": "text",
+            "text": payload.city?payload.city.replace(/[\s\t\n]+/g, '_'):' - '
+        }
+    ]
+};break;
+            
     }
     var raw = JSON.stringify({
       "integrated_number": "918328500265",
