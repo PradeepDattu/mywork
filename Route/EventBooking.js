@@ -173,7 +173,7 @@ city:prevEvent[0].address+"_"+prevEvent[0].city};
 assignees.forEach(async(ass)=>{
   
   const assi=preAssignees.filter((asss)=>asss._id==ass._id);
-  if(assi[0]){
+  if(assi&&assi[0]){
     if(assi[0].assigned!=ass.assigned){
       await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
       
