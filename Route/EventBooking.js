@@ -171,16 +171,25 @@ lname:prevEvent[0].lname,
 city:prevEvent[0].address+"_"+prevEvent[0].city};
 
 assignees.forEach(async(ass)=>{
+  console.log("current assignee details",ass)
+
+  const assi=preAssignees.filter((assss)=>assss._id==ass._id);
+  console.log("previous assignee details",assi);
   
-  const assi=preAssignees.filter((asss)=>asss._id==ass._id);
   if(assi&&assi[0]){
     if(assi[0].assigned!=ass.assigned){
-      console.log("true, ass.mobile,ass.assigned,ass._id,asss._id");
+      console.log("assigned status check",assi[0].assigned,ass.assigned);
+      console.log("assignee true details",ass.mobile,ass._id);
+    
+      
       // await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
       
     }
-  }else{
-    console.log("false, ass.mobile,ass.assigned,ass._id,asss._id");
+  }else if(ass.assigned){
+    
+    console.log("assigned status check",assi[0].assigned,ass.assigned);
+    console.log("assignee false details",ass.mobile,ass._id);
+    
     // await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
     
   }
