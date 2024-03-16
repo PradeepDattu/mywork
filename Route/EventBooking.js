@@ -178,18 +178,18 @@ assignees.forEach(async(ass)=>{
   if(assi&&assi[0]){
     if(assi[0].assigned!=ass.assigned){
     
-      console.log("assignee true details",ass.assigned,ass.mobile,ass._id);
+      // console.log("assignee true details",ass.assigned,ass.mobile,ass._id);
     
       
-      // await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
+      await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
       
     }
   }else if(ass.assigned){
     
     
-    console.log("assignee false details",ass.assigned,ass.mobile,ass._id);
+    // console.log("assignee false details",ass.assigned,ass.mobile,ass._id);
     
-    // await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
+    await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
     
   }
 
