@@ -175,11 +175,13 @@ assignees.forEach(async(ass)=>{
   const assi=preAssignees.filter((asss)=>asss._id==ass._id);
   if(assi&&assi[0]){
     if(assi[0].assigned!=ass.assigned){
-      await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
+      console.log("true, ass.mobile,ass.assigned,ass._id,asss._id");
+      // await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
       
     }
   }else{
-    await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
+    console.log("false, ass.mobile,ass.assigned,ass._id,asss._id");
+    // await Whatsmsgadmin(ass.assigned,UpdatedObject,ass.mobile);
     
   }
 
