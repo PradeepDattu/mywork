@@ -93,7 +93,7 @@ whats.post("/birthday", async (req, res) => {
   
    
 
-    const usersWithBirthdayToday = await User.aggregate([
+    const usersWithBirthdayToday = await UsersModel.aggregate([
       {
         $match: {
           DOB: { $ne: null } // Exclude documents where DOB is null
@@ -116,7 +116,7 @@ whats.post("/birthday", async (req, res) => {
     for (const user of usersWithBirthdayToday) {
       await sendMessages('birthday',user,'','');
     }
-    res.send("Success");
+    res.send(usersWithBirthdayToday);
   } catch (err) {
     res.status(500).send(err.message);
   }
