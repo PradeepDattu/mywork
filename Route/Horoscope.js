@@ -22,6 +22,7 @@ Horo.get("/", async (req, res) => {
           { TOB: { $regex: query, $options: "i" } },
           { POB: { $regex: query, $options: "i" } },
           { horoStatus: { $regex: query, $options: "i" } },
+          { occupation: { $regex: query, $options: "i" } },
         ],
       })
         .sort({ horoDate: "asc" })
