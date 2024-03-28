@@ -20,7 +20,7 @@ const horoSchema = mongoose.Schema({
   horoStatus: { type: String, default: "Pending" },
   horoDate: { type: String },
   authorMessage: { type: String, default: null },
-  occupation: {type: String},
+
 });
 
 const HoroModel = mongoose.model("horoScope", horoSchema);

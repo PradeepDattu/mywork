@@ -22,6 +22,7 @@ const usersSchema = mongoose.Schema({
   TOB: { type: String, default: null },
   POB: { type: String, default: null },
   image: { type: String, default: null },
+  occupation: {type: String,default: null},
   family: [familyMemberSchema],
 });
 
