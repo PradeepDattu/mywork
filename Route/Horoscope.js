@@ -133,7 +133,7 @@ Horo.post("/", async (req, res) => {
       
     };
 
-    Whatsmsg('astro_form',payload.phone,payload.fname+' '+(payload.lname ? payload.lname : ''),'','');
+    // Whatsmsg('astro_form',payload.phone,payload.fname+' '+(payload.lname ? payload.lname : ''),'','');
     
     res.send(data);
     

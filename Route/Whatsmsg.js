@@ -22,6 +22,7 @@ if(mobile.length!=10){return};
                   };break;
         case "astro_form":var extraString="";break;
         case "contact_form":var extraString="";break;
+        case "birthday":var extraString="";break;
         case "event_form":var extraString={
             
                 "type": "body",

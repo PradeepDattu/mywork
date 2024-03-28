@@ -1,5 +1,6 @@
 const express = require("express");
 const whats = express.Router();
+const {UsersModel}=require("../Model/User")
 const { Whatsmsg } = require("./Whatsmsg");
 const { Whatsmsgadmin } = require("./Whatsmsgadmin");
 const numberAdmin1 = '9908875186';
@@ -32,6 +33,8 @@ async function sendMessages(type, payload, numberAdmin1,numberAdmin2) {
         result2=await Whatsmsgadmin('event_form_admin', payload, numberAdmin1);
         result3=await Whatsmsgadmin('event_form_admin', payload, numberAdmin2);
         break;
+      case 'birthday':
+        result1=await Whatsmsg('birthday', payload.phone, `${payload.fname} ${payload.lname || ''}`, '', '');  
       default:
         throw new Error('Invalid message type');
     }
@@ -80,6 +83,45 @@ whats.post("/event", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
+
+whats.post("/birthday", async (req, res) => {
+  try {
+
+    const today = new Date();
+    const currentDay = String(today.getDate()).padStart(2, '0');
+    const currentMonth = String(today.getMonth() + 1).padStart(2, '0'); 
+  
+   
+
+    const usersWithBirthdayToday = await User.aggregate([
+      {
+        $match: {
+          DOB: { $ne: null } // Exclude documents where DOB is null
+        }
+      },
+      {
+        $addFields: {
+          day: { $substrBytes: ["$DOB", 0, 2] },
+          month: { $substrBytes: ["$DOB", 3, 2] }
+        }
+      },
+      {
+        $match: {
+          day: currentDay,
+          month: currentMonth
+        }
+      }
+    ]);
+
+    for (const user of usersWithBirthdayToday) {
+      await sendMessages('birthday',user,'','');
+    }
+    res.send("Success");
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
 
 module.exports = {
   whats,
