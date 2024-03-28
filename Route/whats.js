@@ -34,7 +34,7 @@ async function sendMessages(type, payload, numberAdmin1,numberAdmin2) {
         result3=await Whatsmsgadmin('event_form_admin', payload, numberAdmin2);
         break;
       case 'birthday':
-        result1=await Whatsmsg('birthday', payload.phone, `${payload.fname} ${payload.lname || ''}`, '', '');  
+        result1=await Whatsmsg('birthday', payload.phone, `${payload.fname} ${payload.lname || ''}`, '', '');break;  
       default:
         throw new Error('Invalid message type');
     }
